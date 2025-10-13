@@ -1,0 +1,53 @@
+Pseudocod of:
+
+Q1. Two numbers are given, find their Product.
+1. START
+2. INPUT A,B
+3. SET PRODUCT = A*B
+4. PRINT PRODUCT
+5. STOP
+
+Q2. Two numbers are given a and b, find a divided by b.
+1. START
+2. INPUT A,B
+3. SET DIV = A/B
+4. PRINT DIV
+5. STOP
+
+Q3. Find the square of a number.
+1. START
+2. INPUT NUM
+3. PRINT (NUM*NUM)
+4. STOP
+
+Q4. Two numbers a and b are given, find which is greater, if both are equal print the same.
+1. START
+2. INPUT A,B
+3. IF A>B
+    PRINT A
+   ELSE IF A<B
+    PRINT B
+   ELSE
+    PRINT "EQUAL"
+4. STOP
+
+Q5. A number is given, find if it is positive or negative or zero.
+1. START
+2. INPUT A
+3. IF A>0
+    PRINT "POSITIVE"
+   ELSE IF A<0
+    PRINT "NEGATIVE"
+   ELSE
+    PRINT "ZERO"
+4. STOP
+
+Q6. Find the factorial of a given number.
+1. START
+2. INPUT NUM
+3. SET FACTORIAL = 1
+3. LOOP UNTIL NUM >= 1
+    FACTORIAL = FACTORIAL * NUM
+    NUM = NUM - 1
+4. PRINT FACTORIAL
+5. STOP
