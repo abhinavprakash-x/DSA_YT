@@ -1,0 +1,35 @@
+Convert Decimal to Binary:
+    1. 37 = 100101
+    2. 92 = 1011100
+    3. 128 = 10000000
+    4. 243 = 11110011
+
+Convert Binary to Decimal:
+    1. 1011 = 11
+    2. 111001 = 57
+    3. 10011011 = 155
+    4. 10100100 = 164
+
+Convert Decimal to Octal:
+    1. 28 = 34
+    2. 47 = 57
+    3. 928 = 1640
+    4. 1243 = 2333
+
+Convert Octal to Decimal:
+    1. 41 = 33
+    2. 207 = 135
+    3. 124 = 84
+    4. 311 = 201
+
+Convert Decimal to Hexadecimal:
+    1. 317 = 13D
+    2. 41 = 29
+    3. 14 = E
+    4. 845 = 34D
+
+Convert Hexadecimal to Decimal:
+    1. A11 = 2577
+    2. 49 = 73
+    3. AE2F = 44591
+    4. D97 = 3479
