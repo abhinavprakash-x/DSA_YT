@@ -1,0 +1,18 @@
+Q4. If we have only 4 bits, How 3 and -6 will be written in 4 bits.
+    3 = 0011
+    -6 = 1010
+
+    Rough:
+    6 in Binary 110
+    1s Complement 001
+    2s Complement 010
+    i.e. -6 = 1010
+
+Q5. If we have only 5 bits, How 13 and -16 will be written in 5 bits.
+    13 = 01101
+    -16 = 10000
+
+    Rough:
+    16 in Binary 10000
+    1s Complement 01111
+    2s Complement 10000
