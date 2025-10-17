@@ -1,0 +1,155 @@
+1. Distribute in a Circle (GeekForGeeks)
+
+class Solution {
+  public:
+    int findPosition(int N, int M, int K) {
+        // code here
+        while(M > 1){
+            if(K >= N) K = 1;
+            else K++;
+            M--;
+        }
+        return K;
+    }
+};
+
+NB: This is my Solution but there is a more efficient formula for this 
+ans = ((A+C-1)%B)
+
+2./3. Number of 1 (Set) Bits (Leetcode 191)
+
+class Solution {
+public:
+    int hammingWeight(int n) {
+        int count = 0;
+        while(n>0){
+            if(n&1) count++;
+            n = n>>1;
+        }
+        return count;
+    }
+};
+
+4. Minimum Bit Flips to Convert Number (Leetcode 2220)
+
+class Solution {
+public:
+    int minBitFlips(int start, int goal) {
+        int temp = start ^ goal, count = 0;
+        while(temp > 0){
+            if(temp & 1) count++;
+            temp = temp >> 1;
+        }
+        return count;
+    }
+};
+
+
+EXTRAS (DAY 19 Video Problems):
+
+1. Convert lowercase character to Uppercase character
+
+char toUpper(char a){
+    return a - 32;
+}
+
+2. Armstrong Number (GeekForGeeks)
+
+class Solution {
+  public:
+    bool armstrongNumber(int n) {
+        // code here
+        int sum = 0, num = n;
+        while(n){
+            int digit = n % 10;
+            n /= 10;
+            sum = sum + digit * digit * digit;
+        }
+        if(num == sum) return true;
+        return false;
+    }
+};
+
+NB: instead of digit*digit*digit we can use pow(digit, length) to generalise this function.
+here length = n.size()
+
+3. Trailing Zeros (Leetcode 172)
+
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        int count = 0;
+        while(n >= 5){
+            count += n/5;
+            n /= 5;
+        }
+        return count;
+    }
+};
+
+NB: Not my solution I watched this in the video.
+My Solution sucks (it cant calculate n>24)
+
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        long int fact = 1;
+        int count = 0;
+        while(n>=2){
+            fact *= n;
+            n--;
+        }
+        while(fact){
+            int digit = fact % 10;
+            if(digit == 0){
+                count++;
+                fact /= 10;
+            }
+            else break;
+        }
+        return count;
+    }
+};
+
+4. Valid Rectangle
+
+bool validRect(int a, int b, int c, int d){
+    if(a == b && c == d) return true;
+    if(a == c && b == d) return true;
+    if(a == d && b == c) return true;
+    return false;
+}
+
+5. Bishop Moves
+
+Video Approach
+int bishop_moves(int a, int b){
+    return min(8-a,8-b) + min(a-1,8-b) + min(a-1,b-1) + min(8-a,b-1);
+}
+
+My Approach
+int Bishop_moves(int a, int b){
+    int total = 0;
+    int a1=a, b1=b;
+    int a2=a, b2=b;
+    int a3=a, b3=b;
+    int a4=a, b4=b;
+
+    while(a1-- >= 2 && b1++ <= 7) total++; // top-right
+    while(a2++ <= 7 && b2++ <= 7) total++; // bottom-right
+    while(a3++ <= 7 && b3-- >= 2) total++; // bottom-left
+    while(a4-- >= 2 && b4-- >= 2) total++; // top-left
+
+    return total;
+}
+
+6. Nim Game (Leetcode 292)
+
+Video Approach I am too dumb to do this on my own.
+class Solution {
+public:
+    bool canWinNim(int n) {
+        if(n%4 == 0) return 0;
+        else return 1;
+    }
+};
