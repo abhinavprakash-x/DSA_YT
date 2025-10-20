@@ -1,0 +1,64 @@
+1. for(int i=1;i<=n*n;i++) 
+       cout<<"Coder Army";
+
+Best Case: Ω(n^2)
+Average Case: θ(n^2)
+Worst Case: Ο(n^2)
+
+2. for(int i=1;i<=n*n;i=i+2) 
+       cout<<"Coder Army";
+
+Best Case: Ω(n^2)
+Average Case: θ(n^2)
+Worst Case: Ο(n^2)
+
+3. for(int i=1;i<=n;i++) 
+      for(int j=1;j<=n;j=j+5)
+        cout<<"Coder Army";
+
+Best Case: Ω(n^2)
+Average Case: θ(n^2)
+Worst Case: Ο(n^2)
+
+4. for(int i=1;i<=n;i++) 
+      for(int j=i;j<=n;j++)
+        cout<<"Coder Army";
+
+Best Case: Ω(n^2)
+Average Case: θ(n^2)
+Worst Case: Ο(n^2)
+
+5. for(int i=1;i<=n;i++) 
+      for(int j=1;j<=n;j=j*4)
+        cout<<"Coder Army";
+
+Best Case: Ω(n.log4(n))
+Average Case: θ(n.log4(n))
+Worst Case: Ο(n.log4(n))
+
+6. for(int i=1;i<=n;i=i*2)
+      for(int j=1;j<=i;j=j++)
+        cout<<"Coder Army";
+
+Best Case: Ω(n)
+Average Case: θ(n)
+Worst Case: Ο(n)
+
+7. for(int i=1;i<=n;i++) 
+      for(int j=1;j<=n;j=j++)
+        for(int k=1;k<=n;k=k*3)
+            cout<<"Coder Army"
+
+
+Best Case: Ω(n^2.log3(n))
+Average Case: θ(n^2.log3(n))
+Worst Case: Ο(n^2.log3(n))
+
+8. for(int i=1;i<=n;i++) 
+      for(int j=1;j<=n;j=j++)
+        for(int k=1;k<=n;k++)
+            cout<<"Coder Army";
+
+Best Case: Ω(n^3)
+Average Case: θ(n^3)
+Worst Case: Ο(n^3)
