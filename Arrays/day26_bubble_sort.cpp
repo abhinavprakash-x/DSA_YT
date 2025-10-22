@@ -2,19 +2,55 @@
 using namespace std;
 
 void bubble_sort(int arr[], int n){
-    //
-}
-
-void descending_bubble_sort(int arr[], int n){
-    //
-}
-
-void reverse_bubble_sort(int arr[], int n){
-    //
+    for(int i = 0; i < n-1; ++i){
+        bool swapped = false;
+        for(int j = 0; j < n-i-1; j++){
+            if(arr[j] > arr[j+1]){
+                swap(arr[j], arr[j+1]);
+                swapped = true;
+            }
+        }
+        if(!swapped) break;
+    }
 }
 
 void bubble_sort(char arr[], int n){
-    //
+    for(int i = 0; i < n-1; ++i){
+        bool swapped = false;
+        for(int j = 0; j < n-i-1; j++){
+            if(arr[j] > arr[j+1]){
+                swap(arr[j], arr[j+1]);
+                swapped = true;
+            }
+        }
+        if(!swapped) break;
+    }
+}
+
+void descending_bubble_sort(int arr[], int n){
+    for(int i = 0; i < n-1; ++i){
+        bool swapped = false;
+        for(int j = 0; j < n-i-1; j++){
+            if(arr[j] < arr[j+1]){
+                swap(arr[j], arr[j+1]);
+                swapped = true;
+            }
+        }
+        if(!swapped) break;
+    }
+}
+
+void reverse_bubble_sort(int arr[], int n){
+    for(int i = n-1; i > 0; --i){
+        bool swapped = false;
+        for(int j = n-1; j >= 1; --j){
+            if(arr[j] < arr[j-1]){
+                swap(arr[j], arr[j-1]);
+                swapped = true;
+            }
+        }
+        if(!swapped) break;
+    }
 }
 
 void print_array(int arr[], int n){
