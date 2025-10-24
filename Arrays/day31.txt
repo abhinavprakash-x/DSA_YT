@@ -1,0 +1,67 @@
+1: Find First and Last Position of Element in Sorted Array (Leetcode 34)
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int low = 0, mid;
+        int high = nums.size() - 1;
+        while(low <= high){
+            mid = low + (high - low) / 2;
+            if(nums[mid] == target)
+                return linear_search(nums, mid, target);
+            else if(nums[mid] < target)
+                low = mid + 1;
+            else
+                high = mid - 1;
+        }
+        return {-1,-1};
+    }
+
+    vector<int> linear_search(vector<int>& nums, int mid, int target){
+        int mid1 = mid, mid2 = mid;
+        while(mid1 >= 0 && nums[mid1] == target)
+            mid1--;
+        while(mid2 < nums.size() && nums[mid2] == target)
+            mid2++;
+        return {mid1 + 1,mid2 - 1};
+    }
+};
+
+2: Search Insert Position (Leetcode 35)
+
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int low = 0;
+        int high = nums.size() - 1;
+        int mid;
+        while(low <= high){
+            mid = low + (high - low) / 2;
+            if(nums[mid] == target)
+                return mid;
+            else if(nums[mid] < target)
+                low = mid + 1;
+            else
+                high = mid - 1;
+        }
+        return low;
+    }
+};
+
+3: Sqrt(x) (Leetcode 69)
+
+
+
+4: Kth Missing Positive Number (Leetcode 1539)
+
+
+
+5: Count the Zeros (GeekforGeeks)
+
+
+
+6:Number of occurrence (GeekforGeeks)
+
+
+
+7: Cube root of a number (GeekforGeeks)
