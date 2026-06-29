@@ -35,11 +35,23 @@ int main()
     auto mx_it = max_element(nums.begin(), nums.end());
     auto mn_it = min_element(nums.begin(), nums.end());
 
+    int idx_mx_it = mx_it - nums.begin();
+    int idx_mn_it = mn_it - nums.begin();
+
+    cout << "Max Element: " << nums[idx_mx_it] << endl;
+    cout << "Min Element: " << nums[idx_mn_it] << endl;
+
     // Q4. Lower bound and Upper bound in a sorted vector
     // ans: use lower_bound(first,last); or lower_bound(first,last);
     sort(nums.begin(), nums.end());
-    auto lb_it = lower_bound(nums.begin(), nums.end(), INT_MIN);
-    auto ub_it = upper_bound(nums.begin(), nums.end(), INT_MAX);
+    auto lb_it = lower_bound(nums.begin(), nums.end(), 7);
+    auto ub_it = upper_bound(nums.begin(), nums.end(), 1);
+
+    int idx_lb_it = lb_it - nums.begin();
+    int idx_ub_it = ub_it - nums.begin();
+
+    cout << "Lower Bound Element: " << nums[idx_lb_it] << endl;
+    cout << "Upper Bound Element: " << nums[idx_ub_it] << endl;
 
     // Q5. Pass vector to a function
     // (I'm doing pass by reference since the question didn't ask anything explicitly)
