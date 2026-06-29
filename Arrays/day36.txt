@@ -65,6 +65,3 @@ public:
         return ans;
     }
 };
-
-3: Magnetic Force Between Two Balls (Leetcode 1552)
-

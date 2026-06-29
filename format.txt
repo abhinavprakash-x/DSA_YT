@@ -1,0 +1,20 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <assert.h>
+using namespace std;
+
+class Solution {
+public:
+    int function_name(...) {
+        // Code here
+    }
+};
+
+int main() {
+    Solution obj;
+    assert(obj.function_name(test_case_1) == expected_answer);
+    assert(obj.function_name(test_case_2) == expected_answer);
+    cout<<"All Test Cases Passed";
+    return 0;
+}
