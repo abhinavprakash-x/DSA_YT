@@ -1,0 +1,205 @@
+1. Allocate Minimum Pages (GeekforGeeks)
+
+class Solution {
+  public:
+    int findPages(vector<int> &arr, int k) {
+        // code here
+        int sum = 0, max = 0, mid, ans;
+        int n = arr.size();
+        
+        if(k > n) return -1;
+        
+        for(int i = 0; i < n; ++i)
+        {
+            max = std::max(arr[i], max);
+            sum += arr[i];
+        }
+        while(max <= sum)
+        {
+            mid = max + (sum - max) / 2;
+            int pages  = 0, count = 1;
+            for(int i = 0; i < n; ++i)
+            {
+                pages += arr[i];
+                if(pages > mid)
+                {
+                    count++;
+                    pages = arr[i];
+                }
+            }
+            if(count <= k)
+            {
+                ans = mid;
+                sum = mid - 1;
+            }
+            else
+            {
+                max = mid + 1;
+            }
+        }
+        return ans;
+    }
+};
+
+2: The Painter's Partition Problem-II (GeekforGeeks)
+
+class Solution {
+  public:
+    int minTime(vector<int>& arr, int k) {
+        // code here
+        int sum = 0, max = 0, mid, ans;
+        int n = arr.size();
+        
+        if(k > n) return -1;
+        
+        for(int i = 0; i < n; ++i)
+        {
+            max = std::max(arr[i], max);
+            sum += arr[i];
+        }
+        while(max <= sum)
+        {
+            mid = max + (sum - max) / 2;
+            int pages  = 0, count = 1;
+            for(int i = 0; i < n; ++i)
+            {
+                pages += arr[i];
+                if(pages > mid)
+                {
+                    count++;
+                    pages = arr[i];
+                }
+            }
+            if(count <= k)
+            {
+                ans = mid;
+                sum = mid - 1;
+            }
+            else
+            {
+                max = mid + 1;
+            }
+        }
+        return ans;
+    }
+};
+
+3: Capacity To Ship Packages Within D Days (Leetcode 1011)
+
+class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int days) {
+        int sum = 0, max = 0, mid, ans;
+        int n = weights.size();
+        
+        if(days > n) return -1;
+        
+        for(int i = 0; i < n; ++i)
+        {
+            max = std::max(weights[i], max);
+            sum += weights[i];
+        }
+        while(max <= sum)
+        {
+            mid = max + (sum - max) / 2;
+            int items  = 0, count = 1;
+            for(int i = 0; i < n; ++i)
+            {
+                items += weights[i];
+                if(items > mid)
+                {
+                    count++;
+                    items = weights[i];
+                }
+            }
+            if(count <= days)
+            {
+                ans = mid;
+                sum = mid - 1;
+            }
+            else
+            {
+                max = mid + 1;
+            }
+        }
+        return ans;
+    }
+};
+
+4: Koko Eating Bananas (Leetcode 875)
+
+class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int start, mid, end, ans;
+        long long sum = 0;
+        int n = piles.size();
+
+        for(int i = 0; i < n; ++i) {
+            sum += piles[i];
+            end = max(end, piles[i]);
+        }
+        start = sum / h;
+        if(start == 0) start = 1;
+
+        while(start <= end) {
+            mid = start + (end - start) / 2;
+            int total_time = 0;
+
+            for(int i = 0; i < n; ++i) {
+                total_time += piles[i] / mid;
+                if(piles[i] % mid) total_time++;
+            }
+
+            if(total_time > h) start = mid + 1;
+            else {
+                ans = mid;
+                end = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
+
+5: Split Array Largest Sum (GeekforGeeks)
+
+class Solution {
+  public:
+    int splitArray(vector<int>& arr, int k) {
+        // code here
+        int sum = 0, max = 0, mid, ans;
+        int n = arr.size();
+        
+        if(k > n) return -1;
+        
+        for(int i = 0; i < n; ++i)
+        {
+            max = std::max(arr[i], max);
+            sum += arr[i];
+        }
+        while(max <= sum)
+        {
+            mid = max + (sum - max) / 2;
+            int pages  = 0, count = 1;
+            for(int i = 0; i < n; ++i)
+            {
+                pages += arr[i];
+                if(pages > mid)
+                {
+                    count++;
+                    pages = arr[i];
+                }
+            }
+            if(count <= k)
+            {
+                ans = mid;
+                sum = mid - 1;
+            }
+            else
+            {
+                max = mid + 1;
+            }
+        }
+        return ans;
+    }
+};

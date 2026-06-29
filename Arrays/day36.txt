@@ -1,0 +1,70 @@
+1: Aggresive Cows (GeekforGeeks)
+
+class Solution {
+  public:
+    int aggressiveCows(vector<int> &stalls, int k) {
+        // code here
+        sort(stalls.begin(), stalls.end());
+        int n = stalls.size();
+        int start = 0, end = stalls[n - 1] - stalls[0], mid, ans;
+
+        while(start <= end) {
+            mid = start + (end - start) / 2;
+            int count = 1, pos = stalls[0];
+            
+            for(int i = 1; i < n; ++i) {
+                if(pos + mid <= stalls[i]) {
+                    count++;
+                    pos = stalls[i];
+                }
+            }
+
+            if(count < k) {
+                end = mid - 1;
+            }
+            else {
+                ans = mid;
+                start = mid + 1;
+            }
+        }
+        return ans;
+    }
+};
+
+2: Koko Eating Bananas (Leetcode 875)
+
+class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int start, mid, end, ans;
+        long long sum = 0;
+        int n = piles.size();
+
+        for(int i = 0; i < n; ++i) {
+            sum += piles[i];
+            end = max(end, piles[i]);
+        }
+        start = sum / h;
+        if(start == 0) start = 1;
+
+        while(start <= end) {
+            mid = start + (end - start) / 2;
+            int total_time = 0;
+
+            for(int i = 0; i < n; ++i) {
+                total_time += piles[i] / mid;
+                if(piles[i] % mid) total_time++;
+            }
+
+            if(total_time > h) start = mid + 1;
+            else {
+                ans = mid;
+                end = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
+
+3: Magnetic Force Between Two Balls (Leetcode 1552)
+
