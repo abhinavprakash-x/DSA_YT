@@ -8,10 +8,9 @@ using namespace std;
 class Solution {
 public:
     int maxDistance(vector<int>& position, int m) {
-        // Code here
         sort(position.begin(), position.end());
         int n = position.size();
-        int start = position[0], end = position[n - 1] - position[0], mid, ans;
+        int start = 1, end = position.back() - position.front(), mid, ans = 0;
 
         while(start <= end) {
             mid = start + (end - start) / 2;
