@@ -58,18 +58,59 @@ int Solution::solve(vector<int> &A, int B) {
 class Solution {
   public:
     bool isProduct(vector<int>& arr, long long target) {
-        // code here
-        long long prod;
-        int start = 0, end = arr.size() - 1;
-        while(start < end) {
-            prod = arr[start] * arr[end];
-            
-            if(prod == target) return true;
-            else if(prod < target) start++;
-            else end--;
+        int n = arr.size();
+        sort(arr.begin(), arr.end());
+
+        for(int i = 0; i < n; i++) {
+
+            // Handle zero separately
+            if(arr[i] == 0) {
+                if(target == 0) {
+                    if(n > 1) return true;
+                    continue;
+                }
+                continue;
+            }
+
+            if(target % arr[i] != 0) continue;
+
+            long long query = target / arr[i];
+
+            int start = 0, end = n - 1;
+
+            while(start <= end) {
+                int mid = start + (end - start) / 2;
+
+                if(arr[mid] == query) {
+                    if(mid != i) return true;
+                    else {
+                        // Check for another occurrence
+                        if(mid > 0 && arr[mid - 1] == query) return true;
+                        if(mid < n - 1 && arr[mid + 1] == query) return true;
+                        break;
+                    }
+                }
+                else if(arr[mid] < query)
+                    start = mid + 1;
+                else
+                    end = mid - 1;
+            }
         }
+
         return false;
     }
 };
 
 5: Remove Duplicates from Sorted Array (Interview Bit)
+
+int Solution::removeDuplicates(vector<int> &A) {
+    int n = A.size();
+    int j = 0;
+    for(int i = 1; i < n; i++) {
+        if(A[i] != A[j]) {
+            j++;
+            A[j] = A[i];
+        }
+    }
+    return j + 1;
+}
