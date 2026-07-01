@@ -1,0 +1,86 @@
+1: Kadane's Algorithm (GeekforGeeks)
+
+class Solution {
+  public:
+    int maxSubarraySum(vector<int> &arr) {
+        // Code here
+        int prefix = 0, mx = INT_MIN;
+        int n = arr.size();
+        for(int i = 0; i < n; ++i) {
+            prefix += arr[i];
+            mx = max(prefix, mx);
+            if(prefix < 0) prefix = 0;
+        }
+        return mx;
+    }
+};
+
+3: Maximum prefix sum for a given range (GeekforGeeks)
+
+class Solution {
+  public:
+    vector<int> maxPrefixes(vector<int>& arr, vector<int>& leftIndex,
+                            vector<int>& rightIndex) {
+        // code here.
+        if(leftIndex.size() != rightIndex.size()) return {-1};
+        
+        int n = arr.size();
+        int m = leftIndex.size();
+        vector<int> ans(m);
+        
+        for(int i = 0; i < m; ++i) {
+            
+            int prefix = 0;
+            int mx = INT_MIN;
+            
+            for(int j = leftIndex[i]; j <= rightIndex[i]; ++j) {
+                prefix += arr[j];
+                mx = max(prefix, mx);
+            }
+            ans[i] = mx;
+        }
+        
+        return ans;
+    }
+};
+
+4: Equal Sum with Insertion (GeekforGeeks)
+
+class Solution {
+public:
+    vector<int> equalSum(vector<int>& arr) {
+        int n = arr.size();
+        int min_int = INT_MAX;
+        int idx = -1, flag = -1;
+        int prefix = 0, total_sum = 0, remaining_sum, x;
+
+        for (int i = 0; i < n; ++i)
+            total_sum += arr[i];
+
+        for (int i = 0; i < n - 1; ++i) {
+            prefix += arr[i];
+            remaining_sum = total_sum - prefix;
+
+            if (prefix <= remaining_sum) {
+                x = remaining_sum - prefix;
+
+                if (x < min_int) {
+                    min_int = x;
+                    idx = i + 2;
+                    flag = 1;
+                }
+            }
+            else {
+                x = prefix - remaining_sum;
+
+                if (x < min_int) {
+                    min_int = x;
+                    idx = i + 2;
+                    flag = 2;
+                }
+            }
+        }
+
+        return {min_int, idx, flag};
+    }
+};
