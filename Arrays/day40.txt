@@ -28,3 +28,109 @@ public:
         return water;
     }
 };
+
+2: Triplet Sum (GeekforGeeks)
+
+class Solution {
+  public:
+    bool hasTripletSum(vector<int> &arr, int target) {
+        // Code Here
+        int n = arr.size();
+        sort(arr.begin(), arr.end());
+        
+        for(int i = 0; i < n - 2; ++i) {
+            int remaining = target - arr[i];
+            
+            int start = i + 1, end = n - 1;
+            while(start < end) {
+                if(arr[start] + arr[end] == remaining)
+                    return true;
+                else if(arr[start] + arr[end] < remaining) start++;
+                else end--;
+            }
+        }
+        return false;
+    }
+};
+
+3: Four Elements (GeekforGeeks)
+
+bool find4Numbers(int A[], int n, int X) {
+    
+    for(int i = 0; i < n - 1; ++i) {
+        for(int j = 0; j < n - i - 1; ++j) {
+            if(A[j] > A[j + 1]) {
+                int temp = A[j];
+                A[j] = A[j + 1];
+                A[j + 1] = temp;
+            }
+        }
+    }
+    
+    for(int i = 0; i < n - 3; ++i) {
+        int remaining0 = X - A[i];
+        
+        for(int j = i + 1; j < n - 2; ++j) {
+            int remaining1 = remaining0 - A[j];
+            
+            int start = j + 1, end = n - 1;
+            while(start < end) {
+                if(A[start] + A[end] == remaining1)
+                    return true;
+                else if(A[start] + A[end] < remaining1) start++;
+                else end--;
+            }
+        }
+    }
+    return false;
+}
+
+4: Remove Element from Array (Interview Bit)
+
+int Solution::removeElement(vector<int> &A, int B) {
+    int n = A.size();
+    int k = 0;
+    for(int i = 0; i < n; i++) {
+        if(A[i] != B)
+            A[k++] = A[i];
+    }
+    return k;
+}
+
+5: Array 3 Pointers (Interview Bit)
+
+int Solution::minimize(const vector<int> &A, const vector<int> &B, const vector<int> &C) {
+    int i = 0, j = 0, k = 0;
+    int n1 = A.size(), n2 = B.size(), n3 = C.size();
+    int ans = INT_MAX, mn, mx;
+    
+    while(i < n1 && j < n2 && k < n3) {
+        
+        mn = min({A[i], B[j], C[k]});
+        mx = max({A[i], B[j], C[k]});
+        
+        ans = min(ans, mx - mn);
+        
+        if(mn == A[i]) i++;
+        else if(mn == B[j]) j++;
+        else k++;
+    }
+    return ans;
+}
+
+6: Container with most Water (Interview Bit)
+
+int Solution::maxArea(vector<int> &A) {
+    int n = A.size();
+    int maxArea = 0;
+    
+    int left = 0, right = n - 1;
+    while(left < right) {
+        int area = min(A[right], A[left]) * (right - left);
+        maxArea = max(maxArea, area);
+        
+        if(A[right] < A[left]) right--;
+        else left++;
+    }
+    return maxArea;
+}
