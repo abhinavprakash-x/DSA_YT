@@ -91,24 +91,109 @@ int main()
 
 
 // HW 1: Transpose of a Matrix (GeekforGeeks)
+/*
+class Solution {
+  public:
+    vector<vector<int>> transpose(vector<vector<int>>& mat) {
+        // code here
+        int row = mat.size();
+        int col = mat[0].size();
+        
+        for(int i = 0; i < row - 1; ++i) {
+            for(int j = i + 1; j < col; ++j) {
+                swap(mat[i][j], mat[j][i]);
+            }
+        }
+        return mat;
+    }
+};
+*/
+// HW 3: Spiral Matrix (Leetcode 54)
+/*
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        int row = matrix.size(), col = matrix[0].size();
+        int top = 0, right = col - 1;
+        int bottom = row - 1, left = 0;
+        vector<int> spiral;
 
+        while(top <= bottom && left <= right)
+        {
+            for(int j = left; j <= right; ++j)
+                spiral.push_back(matrix[top][j]);
+            top++;
 
+            for(int i = top; i <= bottom; ++i)
+                spiral.push_back(matrix[i][right]);
+            right--;
 
-// HW 3: Spiral Matrix (Leetcode 56)
+            if(top <= bottom)
+            {
+                for(int j = right; j >= left; --j)
+                    spiral.push_back(matrix[bottom][j]);
+                bottom--;
+            }
 
+            if(left <= right)
+            {
+                for(int i = bottom; i >= top; --i)
+                    spiral.push_back(matrix[i][left]);
+                left++;
+            }
+        }
 
+        return spiral;
+    }
+};
+*/
+// HW 4: Spiral Matrix II (Leetcode 59)
+/*
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> matrix(n, vector<int>(n));
+        int top = 0, right = n - 1;
+        int bottom = n - 1, left = 0;
+        int val = 1;
 
-// HW 4: Spiral Matrix II (Leetcode 57)
+        while(top <= bottom && left <= right)
+        {
+            for(int j = left; j <= right; ++j)
+                matrix[top][j] = val++;
+            top++;
 
+            for(int i = top; i <= bottom; ++i)
+                matrix[i][right] = val++;
+            right--;
 
+            if(top <= bottom)
+            {
+                for(int j = right; j >= left; --j)
+                    matrix[bottom][j] = val++;
+                bottom--;
+            }
 
+            if(left <= right)
+            {
+                for(int i = bottom; i >= top; --i)
+                    matrix[i][left] = val++;
+                left++;
+            }
+        }
+        return matrix;
+    }
+};
+*/
 // HW 5: Print Diagonally (GeekforGeeks)
+/*
 
-
-
+*/
 // HW 6: Matrix Zig-Zag Diagonal Pattern (GeekforGeeks)
+/*
 
-
-
+*/
 // HW 7: Matrix Snake Pattern (GeekforGeeks)
+/*
 
+*/
