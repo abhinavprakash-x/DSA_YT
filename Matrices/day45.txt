@@ -1,0 +1,184 @@
+Q1: Rotate Image (Leetcode 48)
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+
+        // transpose
+        for(int i = 0; i < n; ++i) {
+            for(int j = i + 1; j < n; ++j) {
+                swap(matrix[i][j], matrix[j][i]);
+            }
+        }
+
+        for(int i = 0; i < n; ++i) {
+            int start = 0, end = n - 1;
+            while(start < end) {
+                swap(matrix[i][start], matrix[i][end]);
+                start++;
+                end--;
+            }
+        }
+    }
+};
+
+Q2: Rotate a Matrix by 180 Counterclockwise (GeekforGeeks)
+
+class Solution {
+  public:
+    void rotateMatrix(vector<vector<int>>& mat) {
+        // Code here
+        int n = mat.size();
+        int start = 0, end = n - 1;
+        
+        while(start < end) {
+            for(int i = 0; i < n; ++i) {
+                swap(mat[start][i], mat[end][i]);
+            }
+            start++;
+            end--;
+        }
+        
+        for(int i = 0; i < n; ++i) {
+            start = 0, end = n - 1;
+            while(start < end) {
+                swap(mat[i][start], mat[i][end]);
+                start++;
+                end--;
+            }
+        }
+    }
+};
+
+Q3: Rotate by 90 degree (GeekforGeeks)
+
+class Solution {
+  public:
+    void rotateMatrix(vector<vector<int>>& mat) {
+        // code here
+        int n = mat.size();
+        
+        for(int i = 0; i < n; ++i) {
+            for(int j = i + 1; j < n; ++j) {
+                swap(mat[i][j], mat[j][i]);
+            }
+        }
+        
+        int start = 0, end = n - 1;
+        while(start < end) {
+            for(int i = 0; i < n; ++i) {
+                swap(mat[start][i], mat[end][i]);
+            }
+            start++;
+            end--;
+        }
+    }
+};
+
+Q4: Rotate Each Row of Matrix K Times (GeekforGeeks)
+
+class Solution {
+  public:
+    vector<vector<int>> rotateMatrix(int k, vector<vector<int>> mat) {
+        int n = mat.size();
+        int m = mat[0].size();
+
+        k %= m;
+
+        for (int i = 0; i < n; i++) {
+            reverse(mat[i].begin(), mat[i].begin() + k);
+            reverse(mat[i].begin() + k, mat[i].end());
+            reverse(mat[i].begin(), mat[i].end());
+        }
+
+        return mat;
+    }
+};
+
+Q5: EXTRA Rotate Matrix k times (YT Video CW)
+
+class Solution {
+  public:
+      void rotate90(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+
+        for(int i = 0; i < n; ++i) {
+            for(int j = i + 1; j < n; ++j) {
+                swap(matrix[i][j], matrix[j][i]);
+            }
+        }
+
+        for(int i = 0; i < n; ++i) {
+            int start = 0, end = n - 1;
+            while(start < end) {
+                swap(matrix[i][start], matrix[i][end]);
+                start++;
+                end--;
+            }
+        }
+    }
+    
+    void rotate180(vector<vector<int>>& mat) {
+        // Code here
+        int n = mat.size();
+        int start = 0, end = n - 1;
+        
+        while(start < end) {
+            for(int i = 0; i < n; ++i) {
+                swap(mat[start][i], mat[end][i]);
+            }
+            start++;
+            end--;
+        }
+        
+        for(int i = 0; i < n; ++i) {
+            start = 0, end = n - 1;
+            while(start < end) {
+                swap(mat[i][start], mat[i][end]);
+                start++;
+                end--;
+            }
+        }
+    }
+
+    void rotate270(vector<vector<int>>& mat) {
+        // code here
+        int n = mat.size();
+        
+        for(int i = 0; i < n; ++i) {
+            for(int j = i + 1; j < n; ++j) {
+                swap(mat[i][j], mat[j][i]);
+            }
+        }
+        
+        int start = 0, end = n - 1;
+        while(start < end) {
+            for(int i = 0; i < n; ++i) {
+                swap(mat[start][i], mat[end][i]);
+            }
+            start++;
+            end--;
+        }
+    }
+    
+    vector<vector<int>> rotateMatrix(int k, vector<vector<int>> mat) {
+        // code here
+        k = k % 4;
+        
+        if(k == 0) return mat;
+        else if(k == 1) {
+            rotate90(mat);
+            return mat;
+        }
+        else if(k == 2) {
+            rotate180(mat);
+            return mat;
+        }
+        else if(k == 3) {
+            rotate270(mat);
+            return mat;
+        }
+        else return {{-1}};
+    }
+};

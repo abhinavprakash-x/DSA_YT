@@ -187,13 +187,101 @@ public:
 */
 // HW 5: Print Diagonally (GeekforGeeks)
 /*
+class Solution {
+  public:
+    vector<int> diagView(vector<vector<int>> mat) {
+        // code here
+        int row = mat.size();
+        int col = mat[0].size();
+        vector<int> ans;
 
+        for(int j = 0; j < col; ++j) {
+            int i = 0, k = j;
+
+            while(i < row && k >= 0) {
+                ans.push_back(mat[i++][k--]);
+            }
+        }
+
+        for(int i = 1; i < row; ++i) {
+            int j = col - 1, k = i;
+
+            while(j >= i && k < row) {
+                ans.push_back(mat[k++][j--]);
+            }
+        }
+        return ans;
+    }
+};
 */
 // HW 6: Matrix Zig-Zag Diagonal Pattern (GeekforGeeks)
 /*
+class Solution {
+  public:
+    vector<int> matrixDiagonally(vector<vector<int>>& mat) {
+        int n = mat.size();
+        vector<int> ans;
 
+        int row = 0, col = 0;
+        bool up = true;
+
+        while (ans.size() < n * n) {
+            ans.push_back(mat[row][col]);
+
+            if (up) {
+                if (col == n - 1) {
+                    row++;
+                    up = false;
+                }
+                else if (row == 0) {
+                    col++;
+                    up = false;
+                }
+                else {
+                    row--;
+                    col++;
+                }
+            }
+            else {
+                if (row == n - 1) {
+                    col++;
+                    up = true;
+                }
+                else if (col == 0) {
+                    row++;
+                    up = true;
+                }
+                else {
+                    row++;
+                    col--;
+                }
+            }
+        }
+
+        return ans;
+    }
+};
 */
 // HW 7: Matrix Snake Pattern (GeekforGeeks)
 /*
-
+class Solution {
+  public:
+    vector<int> snakePattern(vector<vector<int>> matrix) {
+        // code here
+        int n = matrix.size();
+        vector<int> ans;
+        
+        for(int i = 0; i < n; ++i) {
+            if(i % 2 == 0) {
+                for(int j = 0; j < n; ++j)
+                    ans.push_back(matrix[i][j]);
+            }
+            else {
+                for(int j = n - 1; j >= 0; --j)
+                    ans.push_back(matrix[i][j]);
+            }
+        }
+        return ans;
+    }
+};
 */
