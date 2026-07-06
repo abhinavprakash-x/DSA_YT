@@ -1,0 +1,106 @@
+Q1: Missing And Repeating (GeekforGeeks)
+
+class Solution {
+  public:
+    vector<int> findTwoElement(vector<int>& arr) {
+        // code here
+        int n = arr.size();
+        vector<int> ans(2, -1);
+        
+        // reduce all elements by 1 so they are 0 indexed
+        for(int i = 0; i < n; ++i)
+            arr[i]--;
+        // find occurence of each element and store in it's index
+        for(int i = 0; i < n; ++i)
+            arr[arr[i] % n] += n;
+        // find repeating element
+        for(int i = 0; i < n; ++i)
+            if(arr[i] / n == 2)
+                ans[0] = i + 1;
+        //find missing element
+        for(int i = 0; i < n; ++i)
+            if(arr[i] / n == 0)
+                ans[1] = i + 1;
+        
+        return ans;
+    }
+};
+
+Q2: Frequencies in a Limited Array (GeekforGeeks)
+
+class Solution {
+  public:
+    // Function to count the frequency of all elements from 1 to N in the array.
+    vector<int> frequencyCount(vector<int>& arr) {
+        // code here
+        int n = arr.size();
+        
+        for(int i = 0; i < n; ++i)
+            arr[i]--;
+            
+        for(int i = 0; i < n; ++i)
+            arr[arr[i] % n] += n;
+        
+        // only keep frequency
+        for(int i = 0; i < n; ++i)
+            arr[i] = arr[i] / n;
+            
+        return arr;
+    }
+};
+
+Q3: Majority Element (Leetcode 169)
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int n = nums.size();
+        int candidate = nums[0], count = 0;
+
+        for(int i = 0; i < n; ++i) {
+            if(nums[i] == candidate) count++;
+            else {
+                if(count > 0) count--;
+                else {
+                    candidate = nums[i];
+                    count = 1;
+                }
+            }
+        }
+
+        return candidate;
+    }
+};
+
+Q4: First Missing Positive (Leetcode 41)
+
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        int n = nums.size();
+        int base = n + 1;
+
+        // Step 1: Remove invalid values
+        for (int &x : nums) {
+            if (x <= 0 || x > n)
+                x = 0;
+        }
+
+        // Step 2: Count frequencies
+        for (int i = 0; i < n; i++) {
+            int val = nums[i] % base;   // recover original value
+
+            if (val != 0) {
+                nums[val - 1] += base;
+            }
+        }
+
+        // Step 3: Find first missing positive
+        for (int i = 0; i < n; i++) {
+            if (nums[i] / base == 0)
+                return i + 1;
+        }
+
+        return n + 1;
+    }
+};
