@@ -1,0 +1,95 @@
+Q1: Defanging an IP Address (Leetcode 1108)
+
+class Solution {
+public:
+    string defangIPaddr(string address) {
+        string ans;
+        for(char c : address) {
+            if(c == '.') ans = ans + "[.]";
+            else ans = ans + c;
+        }
+        return ans;
+    }
+};
+
+Q2: String Rotated by 2 Places (GeekforGeeks)
+
+class Solution {
+  public:
+    void rotateclockwise(string &s) {
+        int n = s.length();
+        char c = s[n - 1];
+        
+        for(int i = n - 1; i > 0; --i) {
+            s[i] = s[i - 1];
+        }
+        s[0] = c;
+    }
+    
+    void rotatecounterclockwise(string &s) {
+        int n = s.length();
+        char c = s[0];
+        
+        for(int i = 0; i < n - 1; ++i) {
+            s[i] = s[i + 1];
+        }
+        s[n - 1] = c;
+    }
+
+    bool isRotated(string& s1, string& s2) {
+        // code here
+        string s3 = s1;
+        
+        rotateclockwise(s3);
+        rotateclockwise(s3);
+        
+        if(s3 == s2) return true;
+        
+        s3 = s1;
+        
+        rotatecounterclockwise(s3);
+        rotatecounterclockwise(s3);
+        
+        if(s3 == s2) return true;
+        
+        return false;
+    }
+};
+
+Q3: Check if the Sentence is Pangram (Leetcode 1832)
+
+class Solution {
+public:
+    bool checkIfPangram(string sentence) {
+        vector<bool> freq(26, 0);
+
+        for(char c : sentence)
+            freq[c - 'a'] = 1;
+
+        for(int i = 0; i < 26; ++i)
+            if(freq[i] == 0) return false;
+
+        return true;
+    }
+};
+
+Q4: Sort a String (GeekforGeeks)
+
+class Solution {
+  public:
+    string sortString(string &s) {
+        // code here
+        vector<int> freq(26, 0);
+
+        for(char c : s)
+            freq[c - 'a']++;
+            
+        string ans;
+        
+        for(int i = 0; i < 26; ++i) {
+            ans.append(freq[i], 'a' + i);
+        }
+        
+        return ans;
+    }
+};
