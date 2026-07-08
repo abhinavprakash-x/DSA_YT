@@ -67,4 +67,109 @@ public:
 };
 
 Day 53
-Q1: 
+Q1: Add Strings (Leetcode 415)
+
+class Solution {
+public:
+    string addStrings(string num1, string num2) {
+        int carry = 0, sum = 0;
+        int n1 = num1.size(), n2 = num2.size();
+        int i = n1 - 1, j = n2 - 1;
+        string ans;
+
+        while (i >= 0 || j >= 0 || carry) {
+            sum = carry;
+
+            if (i >= 0)
+                sum += num1[i--] - '0';
+
+            if (j >= 0)
+                sum += num2[j--] - '0';
+
+            carry = sum / 10;
+            sum %= 10;
+
+            ans += sum + '0';
+        }
+
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+Q2: Sort Vowels in a String (Leetcode 2785)
+
+class Solution {
+public:
+    inline bool isLVowel(char c) {
+        if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') return true;
+        return false;
+    }
+    inline bool isUVowel(char c) {
+        if(c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') return true;
+        return false;
+    }
+    string sortVowels(string s) {
+        vector<int> lower(26,0);
+        vector<int> upper(26,0);
+
+        for(char c : s) {
+            if(isLVowel(c)) lower[c - 'a']++;
+            else if(isUVowel(c)) upper[c - 'A']++;
+        }
+
+        string temp;
+        for(int i = 0; i < 26; ++i)
+            temp.append(upper[i], 'A' + i);
+
+        for(int i = 0; i < 26; ++i)
+            temp.append(lower[i], 'a' + i);
+
+        string ans = s;
+        int n = s.size();
+        int k = 0;
+
+        for(int i = 0; i < n; ++i) {
+            if(isLVowel(s[i]) || isUVowel(s[i]))
+                ans[i] = temp[k++];
+            
+            else ans[i] = s[i];
+        }
+        return ans;
+    }
+};
+
+Q3: Case-specific Sorting of Strings (GeekforGeeks)
+
+class Solution {
+public:
+    string caseSort(string& s) {
+        vector<int> lower(26, 0);
+        vector<int> upper(26, 0);
+
+        for (char c : s) {
+            if (islower(c))
+                lower[c - 'a']++;
+            else
+                upper[c - 'A']++;
+        }
+
+        int l = 0, u = 0;
+
+        for (int i = 0; i < s.size(); i++) {
+            if (islower(s[i])) {
+                while (lower[l] == 0)
+                    l++;
+                s[i] = 'a' + l;
+                lower[l]--;
+            } else {
+                while (upper[u] == 0)
+                    u++;
+                s[i] = 'A' + u;
+                upper[u]--;
+            }
+        }
+
+        return s;
+    }
+};
