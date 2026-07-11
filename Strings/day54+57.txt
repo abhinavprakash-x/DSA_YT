@@ -1,0 +1,124 @@
+Day 54
+Q1: Factorials of large numbers (GeekforGeeks)
+
+  class Solution {
+  public:
+    vector<int> factorial(int n) {
+        // code here
+        vector<int> ans(1,1);
+        int carry = 0, i = 0;
+        
+        while(n > 0) {
+            int carry = 0, res, size = ans.size();
+            for(int i = 0; i < size; ++i) {
+                res = ans[i] * n + carry;
+                carry = res / 10;
+                ans[i] = res % 10;
+            }
+            
+            while(carry) {
+                ans.push_back(carry % 10);
+                carry /= 10;
+            }
+            n--;
+        }
+        
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+Q2: Roman to Integer (Leetcode 13)
+
+class Solution {
+public:
+    int romanToInt(string s) {
+        int result = 0, curr;
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            curr = value(s[i]);
+            if(i + 1 < n && curr < value(s[i + 1])){
+                result -= curr;
+            }else{
+                result += curr;
+            }
+        }
+        return result;
+    }
+    int value(char a){
+        switch(a){
+            case 'I': return 1;
+            case 'V': return 5;
+            case 'X': return 10;
+            case 'L': return 50;
+            case 'C': return 100;
+            case 'D': return 500;
+            case 'M': return 1000;
+            default: return 0;
+        }
+    }
+};
+
+Q3: Integer to Roman (Leetcode 12)
+
+class Solution {
+public:
+    string intToRoman(int num) {
+        string ans;
+        int digit;
+
+        // Thousands place
+        if (num / 1000 != 0) {
+            digit = num / 1000;
+            num %= 1000;
+            ans.append(digit, 'M');
+        }
+
+        // Hundreds place
+        if (num / 100 != 0) {
+            digit = num / 100;
+            num %= 100;
+
+            if (digit == 9) ans.append("CM");
+            else if (digit >= 5) {
+                ans.append("D");
+                ans.append(digit - 5, 'C');
+            }
+            else if (digit == 4) ans.append("CD");
+            else ans.append(digit, 'C');
+        }
+
+        // Tens place
+        if (num / 10 != 0) {
+            digit = num / 10;
+            num %= 10;
+
+            if (digit == 9) ans.append("XC");
+            else if (digit >= 5) {
+                ans.append("L");
+                ans.append(digit - 5, 'X');
+            }
+            else if (digit == 4) ans.append("XL");
+            else ans.append(digit, 'X');
+        }
+
+        // Ones place
+        if (num == 9) ans.append("IX");
+        else if (num >= 5) {
+            ans.append("V");
+            ans.append(num - 5, 'I');
+        }
+        else if (num == 4) ans.append("IV");
+        else ans.append(num, 'I');
+
+        return ans;
+    }
+};
+
+Day57:
+Q1: Longest Substring Without Repeating Characters (Leetcode 3)
+
+
+
+Q2: Smallest Distinct Window (GeekforGeeks)
+
