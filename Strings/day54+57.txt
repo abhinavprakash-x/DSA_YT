@@ -118,7 +118,135 @@ public:
 Day57:
 Q1: Longest Substring Without Repeating Characters (Leetcode 3)
 
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.size();
+        int first = 0, second = 0;
+        int ans = 0;
+        vector<bool> freq(256, 0);
 
+        while(second < n) {
+            while(freq[s[second]]) {
+                freq[s[first]] = 0;
+                first++;
+            }
+
+            freq[s[second]] = 1;
+            second++;
+
+            ans = max(ans, second - first);
+        }
+
+        return ans;
+    }
+};
 
 Q2: Smallest Distinct Window (GeekforGeeks)
 
+class Solution {
+public:
+    int findSubString(string& str) {
+        int n = str.size();
+        if (n == 0) return 0;
+
+        bool visited[256] = {false};
+        int unique_count = 0;
+
+        for (int i = 0; i < n; ++i) {
+            unsigned char c = str[i];
+            if (!visited[c]) {
+                visited[c] = true;
+                unique_count++;
+            }
+        }
+
+        int window_freq[256] = {0};
+        int curr_count = 0;
+        int min_length = INT_MAX;
+        int first = 0;
+
+        // Sliding Window
+        for (int second = 0; second < n; ++second) {
+            unsigned char in_char = str[second];
+            
+            if (window_freq[in_char] == 0) {
+                curr_count++;
+            }
+            window_freq[in_char]++;
+
+            // Shrink window from the left
+            while (curr_count == unique_count) {
+                min_length = min(min_length, second - first + 1);
+
+                unsigned char out_char = str[first];
+                window_freq[out_char]--;
+                
+                if (window_freq[out_char] == 0) {
+                    curr_count--;
+                }
+                first++;
+            }
+        }
+
+        return (min_length == INT_MAX) ? 0 : min_length;
+    }
+};
+
+Q3: Smallest window containing 0, 1 and 2 (GeekforGeeks)
+
+class Solution {
+  public:
+    int smallestSubstring(string &s) {
+        // code here
+        int n = s.size();
+        if(n < 3) return -1;
+        
+        int freq[3] = {0};
+        int first = 0;
+        int ans = INT_MAX;
+        
+        for(int second = 0; second < n; ++second) {
+            freq[s[second] - '0']++;
+            
+            while(freq[0] > 0 && freq[1] > 0 && freq[2] > 0) {
+                ans = min(ans, second - first + 1);
+                if(ans == 3) return 3;
+                
+                freq[s[first] - '0']--;
+                first++;
+            }
+        }
+        return (ans == INT_MAX) ? -1 : ans;
+    }
+};
+
+Q4: Longest Substring with K Uniques (GeekforGeeks)
+
+class Solution {
+  public:
+    int longestKSubstr(string &s, int k) {
+        // code here
+        int n = s.size();
+        if(n == 0) return 0;
+        
+        int freq[26] = {0};
+        int first = 0;
+        int count = 0;
+        int ans = -1;
+        
+        for(int second = 0; second < n; ++second) {
+            if(freq[s[second] - 'a'] == 0) {
+                count++;
+            }
+            freq[s[second] - 'a']++;
+            while(count > k) {
+                freq[s[first] - 'a']--;
+                if(freq[s[first] - 'a'] == 0) count--;
+                first++;
+            }
+            if(count == k) ans = max(ans, second - first + 1);
+        }
+        return ans;
+    }
+};
