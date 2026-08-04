@@ -1,4 +1,4 @@
-Day 54
+Day 54:
 Q1: Factorials of large numbers (GeekforGeeks)
 
   class Solution {

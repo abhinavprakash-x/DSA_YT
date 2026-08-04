@@ -1,0 +1,159 @@
+Day 58
+Q1: Longest Prefix Suffix (GeekforGeeks)
+
+class Solution {
+  public:
+    int getLPSLength(string &s) {
+        // code here
+        int n = s.size();
+        vector<int> LPS(n, 0);
+        int pre = 0, suf = 1;
+        
+        while(suf < n) {
+            if(s[pre] == s[suf]) {
+                LPS[suf] = pre + 1;
+                pre++;
+                suf++;
+            }
+            else {
+                if(pre == 0) {
+                    LPS[suf] = 0;
+                    suf++;
+                }
+                else {
+                    pre = LPS[pre - 1];
+                }
+            }
+        }
+        return LPS[n - 1];
+    }
+};
+
+Q2: Find the Index of the First Occurrence in a String (Leetcode 28)
+
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        int n1 = haystack.size(), n2 = needle.size();
+
+        if(n2 > n1) return -1;
+        if(n2 == 0) return 0;
+
+        int start = 0;
+
+        while(start <= n1 - n2) {
+            int str1 = start;
+            int str2 = 0;
+            int count = 0;
+
+            while(str1 < n1 && str2 < n2 && haystack[str1] == needle[str2]) {
+                str1++;
+                str2++;
+                count++;
+            }
+
+            if(count == n2) return start;
+            start++;
+        }
+
+        return -1;
+    }
+};
+
+Day 59:
+Q1: Q2: Find the Index of the First Occurrence in a String (Leetcode 28)
+
+class Solution {
+public:
+    void find_lps(vector<int> &lps, string s) {
+        int n = s.size();
+        int first = 0, second = 1;
+
+        while(second < n) {
+            if(s[first] == s[second]) {
+                lps[second] = first + 1;
+                first++;
+                second++;
+            }
+            else {
+                if(first == 0) lps[second++] = 0;
+                else first = lps[first - 1];
+            }
+        }
+    }
+
+    int strStr(string haystack, string needle) {
+        int h = haystack.size(), n = needle.size();
+        vector<int> lps(n, 0);
+        find_lps(lps, needle);
+        int first = 0, second = 0;
+
+        while(first < h && second < n) {
+            if(haystack[first] == needle[second]) {
+                first++;
+                second++;
+            }
+            else {
+                if(second == 0) first++;
+                else second = lps[second - 1];
+            }
+            if(second == n) return first - second;
+        }
+        return -1;
+    }
+};
+
+Q2: Search Pattern (GeekforGeeks)
+
+class Solution {
+public:
+    void find_lps(vector<int> &lps, const string &s) {
+        int n = s.size();
+        int first = 0, second = 1;
+
+        while (second < n) {
+            if (s[first] == s[second]) {
+                lps[second] = first + 1;
+                first++;
+                second++;
+            }
+            else {
+                if (first == 0) {
+                    lps[second++] = 0;
+                } else {
+                    first = lps[first - 1];
+                }
+            }
+        }
+    }
+
+    vector<int> search(string &pat, string &txt) {
+        int h = txt.size(), n = pat.size();
+        vector<int> lps(n, 0);
+        find_lps(lps, pat);
+        
+        int first = 0, second = 0;
+        vector<int> ans;
+
+        while (first < h) {
+            if (txt[first] == pat[second]) {
+                first++;
+                second++;
+            }
+
+            if (second == n) {
+                ans.push_back(first - second);
+                second = lps[second - 1];
+            } 
+
+            else if (first < h && txt[first] != pat[second]) {
+                if (second == 0) {
+                    first++;
+                } else {
+                    second = lps[second - 1];
+                }
+            }
+        }
+        return ans;
+    }
+};
