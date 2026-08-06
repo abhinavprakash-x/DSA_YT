@@ -1,0 +1,156 @@
+Q1: Min Chars to Add for Palindrome (GeekforGeeks)
+
+class Solution {
+  public:
+    void find_lps(vector<int> &lps, string s, int n) {
+        int left = 0, right = 1;
+        
+        while(right < n) {
+            if(s[left] == s[right]) {
+                lps[right] = left + 1;
+                left++;
+                right++;
+            }
+            else {
+                if(left == 0) lps[right++] = 0;
+                else left = lps[left - 1];
+            }
+        }
+    }
+    
+    int minChar(string &s) {
+        // code here
+        int n = s.size();
+        
+        string rev = s;
+        reverse(rev.begin(), rev.end());
+
+        string temp = s + "$" + rev;
+        
+        vector<int> lps(temp.size(), 0);
+        find_lps(lps, temp, temp.size());
+        
+        return (n - lps.back());
+    }
+};
+
+Q2: Repeated String Match (Leetcode 686)
+
+class Solution {
+public:
+    void find_lps(vector<int> &lps, string s) {
+        int n = s.size();
+        int first = 0, second = 1;
+
+        while(second < n) {
+            if(s[first] == s[second]) {
+                lps[second] = first + 1;
+                first++;
+                second++;
+            }
+            else {
+                if(first == 0) lps[second++] = 0;
+                else first = lps[first - 1];
+            }
+        }
+    }
+
+    bool string_match(string &a, string &b) {
+        int n1 = a.size(), n2 = b.size();
+        vector<int> lps(n2, 0);
+        find_lps(lps, b);
+        int first = 0, second = 0;
+
+        while(first < n1 && second < n2) {
+            if(a[first] == b[second]) {
+                first++;
+                second++;
+            }
+            else {
+                if(second == 0) first++;
+                else second = lps[second - 1];
+            }
+            if(second == n2) return true;
+        }
+        return false;
+    }
+
+    int repeatedStringMatch(string a, string b) {
+        if(a == b) return 1;
+        int repeat = (b.size() + a.size() - 1) / a.size();
+
+        string temp;
+        for (int i = 0; i < repeat; i++)
+            temp += a;
+        
+        if(string_match(temp, b)) return repeat;
+        temp += a;
+        if(string_match(temp, b)) return repeat + 1;
+        return -1;
+    }
+};
+
+Q3: Minimum Appends for Palindrome! (Interviewbit)
+
+int Solution::solve(string A) {
+    int n = A.size();
+    
+    string rev = A;
+    reverse(rev.begin(), rev.end());
+    string temp = rev + "$" + A;
+    
+    int size = temp.size();
+    vector<int> lps(size, 0);
+    
+    int first = 0, second = 1;
+    while(second < size) {
+        if(temp[first] == temp[second]) {
+            lps[second] = first + 1;
+            first++;
+            second++;
+        }
+        else {
+            if(first == 0) lps[second++] = 0;
+            else first = lps[first - 1];
+        }
+    }
+    
+    return n - lps.back();
+}
+
+Q4: Shortest Palindrome (Leetcode 214)
+
+class Solution {
+public:
+    string shortestPalindrome(string s) {
+        int n = s.size();
+
+        string rev = s;
+        reverse(rev.begin(), rev.end());
+        string temp = s + "$" + rev;
+        int size = temp.size();
+
+        vector<int> lps(size, 0);
+        int first = 0, second = 1;
+
+        while(second < size) {
+            if(temp[first] == temp[second]) {
+                lps[second] = first + 1;
+                first++;
+                second++;
+            }
+            else {
+                if(first == 0) lps[second++] = 0;
+                else first = lps[first - 1];
+            }
+        }
+
+        string ans;
+        int append_count = n - lps.back();
+        for(int i = 0; i < append_count; ++i)
+            ans += rev[i];
+
+        ans += s;
+        return ans;
+    }
+};
