@@ -1,0 +1,164 @@
+Q1. Difference between static and dynamic allocation?
+ans. Static is done on stack, extremely fast, less storage
+     checks done on compile time int a[n] not allowed.
+     Dynamic is done on heap, slower, high storage
+     on run time int a[n] allowed using new keyword
+
+
+Q2. Predict without compiling:
+
+void modifyString(char *str)
+{
+    while (*str)
+    {
+        if (*str >= 'a' && *str <= 'z')
+        {
+            *str = *str - 'a' + 'A';
+        }
+        str++;
+    }
+}
+
+int main()
+{
+    char myString[] = "hello World";
+    modifyString(myString);
+    cout << myString;
+    return 0;
+}
+
+ans: prediction: HELLO WORLD
+
+
+Q3: Predict without compiling:
+
+void concatenateAndPrint(char *str1, const char *str2)
+{
+    while (*str1)
+    {
+        str1++;
+    }
+
+    while ((*str1 = *str2))
+    {
+        str1++, str2++;
+    }
+}
+
+int main()
+{
+    char first[] = "Good";
+    const char second[] = "Morning";
+    concatenateAndPrint(first, second);
+    cout << first;
+    return 0;
+}
+
+ans: predictionn: GoodMorning
+
+
+Q4: Predict without compiling:
+
+void reverseString(char *str)
+{
+    char *end = str;
+    while (*end)
+    {
+        end++;
+    }
+    end--;
+
+    while (str < end)
+    {
+        char temp = *str;
+        *str = *end;
+        *end = temp;
+        str++, end--;
+    }
+}
+
+int main()
+{
+    char myString[] = "Programming";
+    reverseString(myString);
+    cout << myString;
+    return 0;
+}
+
+ans: prediction: gnimmargorP
+
+
+Q5: Predict without compiling:
+
+void updateValues(int *a, int *b) {
+    *a += *b;
+    *b = abs(*a - 2 * (*b));
+}
+
+int main() {
+    int x = 5, y = 3;
+    updateValues(&x, &y);
+    cout << x << " " << y;
+    return 0;
+}
+
+ans: prediction: 8 2
+
+
+Q6: Predict without compiling:
+
+void countVowelsAndConsonants(const char *str, int &vowels, int &consonants) {
+    vowels = consonants = 0;
+
+    while (*str) {
+        char ch = tolower(*str);
+        if (isalpha(ch)) {
+            if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
+                vowels++;
+            } else {
+                consonants++;
+            }
+        }
+        str++;
+    }
+}
+
+int main() {
+    const char *text = "Hello, World!";
+    int numVowels, numConsonants;
+    countVowelsAndConsonants(text, numVowels, numConsonants);
+    cout << "Vowels: " << numVowels << ", Consonants: " << numConsonants;
+    return 0;
+}
+
+ans: prediction: Vowels: 3, Consonants: 7
+
+
+Q7: Predict without compiling:
+
+void foo(int *i, int*j) {
+    *i = *i + *j;
+    *j = *i - *j;
+    *i = *i - *j;
+}
+
+int main()
+{
+  int a = 4, b = 5;
+  foo(&a, &b);
+  cout<<a<<b;
+}
+
+ans: prediction: 54
+
+
+
+REAL ANSWERS (from day66_test.cpp)
+Q2 Real Answer: HELLO WORLD
+Q3 Real Answer: GoodMorning
+Q4 Real Answer: gnimmargorP
+Q5 Real Answer: 8 2
+Q6 Real Answer: Vowels: 3, Consonants: 7
+Q7 Real Answer: 54
+
+All of them match with my predictions.
