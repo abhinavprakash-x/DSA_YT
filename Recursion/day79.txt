@@ -1,0 +1,113 @@
+Q1: Pallindrome String (GeekforGeeks)
+
+// Normal Method
+class Solution {
+  public:
+    bool isPalindrome(string& s) {
+        // code here
+        int start = 0;
+        int end = s.size() - 1;
+        
+        while(start < end) {
+            if(s[start++] == s[end--]) continue;
+            else return false;
+        }
+        
+        return true;
+    }
+};
+
+// Using Recursion
+class Solution {
+  public:
+  
+    bool isPallindromeRecursive(string &s, int start, int end) {
+        if(s[start] != s[end]) return false;
+        if(start > end) return true;
+        return isPallindromeRecursive(s, ++start, --end);
+    }
+    
+    bool isPalindrome(string& s) {
+        // code here
+        int start = 0;
+        int end = s.size() - 1;
+        
+        return isPallindromeRecursive(s, start, end);
+    }
+};
+
+Q2: Lowercase to upper case (GeekforGeeks)
+
+string to_upper(string str) {
+    // code
+    int end = str.size() - 1;
+    for(int start = 0; start <= end; ++start) {
+        str[start] = str[start] - 'a' + 'A';
+    }
+    return str;
+}
+
+// Using Recursion
+void to_upper_recursive(string &str, int start, int end) {
+    if(start > end) return;
+    str[start] = str[start] - 'a' + 'A';
+    to_upper_recursive(str, start + 1, end);
+}
+
+string to_upper(string str) {
+    to_upper_recursive(str, 0, str.size() - 1);
+    return str;
+}
+
+Q3: Convert string to Lowercase (GeekforGeeks)
+
+class Solution {
+  public:
+  
+    void to_lower_recursive(string &str, int start, int end) {
+        if(start > end) return;
+        if(str[start] >= 'A' && str[start] <= 'Z')
+            str[start] = str[start] - 'A' + 'a';
+            
+        to_lower_recursive(str, start + 1, end);
+    }
+    
+    string toLower(string& s) {
+        // code here
+        to_lower_recursive(s, 0, s.size() - 1);
+        return s;
+    }
+};
+
+Q4: Reverse a String (GeekforGeeks)
+
+class Solution {
+  public:
+    string reverseString(string& s) {
+        // code here
+        int start = 0;
+        int end = s.size() - 1;
+        
+        while(start < end)
+            swap(s[start++], s[end--]);
+            
+        return s;
+    }
+};
+
+// Using Recursion
+class Solution {
+  public:
+  
+    void rev(string &s, int start, int end) {
+        if(start >= end) return;
+        swap(s[start], s[end]);
+        rev(s, start + 1, end - 1);
+    }
+  
+    string reverseString(string& s) {
+        // code here
+        rev(s, 0, s.size() - 1);
+        return s;
+    }
+};

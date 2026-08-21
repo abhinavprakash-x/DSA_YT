@@ -1,0 +1,49 @@
+Calculate Time and Space Complexity of All of these Recursive Algorithms
+
+Q1:
+int fact(int n) {
+    if(n <= 1) return 1;
+    return n * fact(n - 1);
+}
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+Q2:
+int power(int base, int exponent) {
+    if(exponent == 0) return 1;
+    return base * power(base, exponent - 1)
+}
+
+Time Complexity: O(exponent)    or O(n)
+Space Complexity: O(exponent)   or O(n)
+
+Q3:
+bool isPallindrome(string str, int start, int end) {
+    if(start >= end) return true;
+    return (str[start] == str[end]) && isPallindrome(str, start + 1, end - 1);
+}
+
+Since this isn't pass by reference but pass by value,
+Time Complexity: O(end)     or O(n) (Assuming copying string takes O(1) time)
+Space Complexity: O(str*end)    or O(n^2) (Every call a copy of str is created)
+
+Q4:
+void reverseString(string &str, int start, int end) {
+    if(start < end) {
+        swap(str[start], str[end]);
+        reverseString(str, start + 1, end - 1);
+    }
+}
+
+Time Complexity: O(end)     or O(n)
+Space Complexity: O(end)    or O(n)
+
+Q5:
+bool isEven(int n) {
+    if(n == 0) return true;
+    return !isEven(n - 1);
+}
+
+Time Complexity: O(n)
+Space Complexity: O(n)
