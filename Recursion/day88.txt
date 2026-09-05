@@ -1,0 +1,51 @@
+Q1: Subset Sum Divisible by k (GeekforGeeks)
+
+// Time Limit Exceeded
+class Solution {
+  public:
+    bool divk(vector<int>& arr, int idx, int n, int k, int current_sum) {
+        if(idx == n) {
+            if(current_sum % k == 0 && current_sum != 0) return true;
+            return false;
+        }
+        return divk(arr, idx + 1, n, k, current_sum)
+                    || divk(arr, idx + 1, n, k, current_sum + arr[idx]);
+    }
+    
+    bool divisibleByK(vector<int>& arr, int k) {
+        // code here
+        return divk(arr, 0, arr.size(), k, 0);
+    }
+};
+
+Q2: Count Subsequences Divisible by n (GeekforGeeks)
+
+// Time Limit Exceeded
+class Solution {
+public:
+    const long long MOD = 1000000007;
+
+    void subsequence(string& s, int idx, int n, long long& count, int remainder, bool taken)
+    {
+        if (idx == s.size()) {
+            if (taken && remainder == 0) count = (count + 1) % MOD;
+            return;
+        }
+
+        int digit = s[idx] - '0';
+
+        // Take
+        int newRemainder = (remainder * 10 + digit) % n;
+        subsequence(s, idx + 1, n, count, newRemainder, true);
+
+        // Don't take
+        subsequence(s, idx + 1, n, count, remainder, taken);
+    }
+
+    int countSubsequences(string& s, int n) {
+        long long count = 0;
+        subsequence(s, 0, n, count, 0, false);
+
+        return count;
+    }
+};
