@@ -31,11 +31,75 @@ public:
 
 Q2: Coin Change (Count Ways) (GeekforGeeks)
 
-
+// Time Limit Exceeded, use DP
+class Solution {
+  public:
+    int recursive_count(vector<int>& coins, int sum, int idx) {
+        if(sum == 0) return 1;
+        if(idx == coins.size() || sum < 0) return 0;
+        
+        return recursive_count(coins, sum - coins[idx], idx)
+                    + recursive_count(coins, sum, idx + 1);
+    }
+  
+    int count(vector<int>& coins, int sum) {
+        // code here
+        return recursive_count(coins, sum, 0);
+    }
+};
 
 Q3: Combination Sum II (Leetcode 40)
 
+class Solution {
+public:
+    void combinations(vector<int>& candidates, int target, vector<vector<int>>& ans, int idx, vector<int>& temp) {
+        if(target == 0) {
+            ans.push_back(temp);
+            return;
+        }
 
+        for(int i = idx; i < candidates.size(); ++i) {
+            if(candidates[i] > target) break;
+            if(i > idx && candidates[i] == candidates[i - 1]) continue;
+
+            temp.push_back(candidates[i]);
+            combinations(candidates, target - candidates[i], ans, i + 1, temp);
+            temp.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<vector<int>> ans;
+        vector<int> temp;
+        combinations(candidates, target, ans, 0, temp);
+        return ans;
+    }
+};
 
 Q4: Elimination Game (Leetcode 390)
 
+class Solution {
+public:
+    int recurse(int first, int gap, bool direction, int remaining_elements) {
+        if(remaining_elements == 1) return first;
+
+        if(direction) {
+            first = (remaining_elements % 2) ? first + gap : first;
+        }
+        else {
+            first +=  gap;
+        }
+
+        return recurse(first, gap * 2, !direction, remaining_elements / 2);
+    }
+
+    int lastRemaining(int n) {
+        int first = 1;
+        int gap = 1;
+        bool direction = false; // false = left to right
+        int remaining_elements = n;
+
+        return recurse(first, gap, direction, remaining_elements);
+    }
+};
