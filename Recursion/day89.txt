@@ -1,0 +1,86 @@
+Q1: Permutations (Leetcode 46)
+
+// This  is backtracking and Recursion combined isn't this...
+class Solution {
+public:
+    void permutations(vector<int>& nums, vector<vector<int>>& ans, int idx, int n) {
+        if(idx == n) {
+            ans.push_back(nums);
+            return;
+        }
+        for(int i = idx; i < n; ++i) {
+            swap(nums[i], nums[idx]);
+            permutations(nums, ans, idx + 1, n);
+            swap(nums[i], nums[idx]);
+        }
+    }
+
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ans;
+        permutations(nums, ans, 0, nums.size());
+        return ans;
+    }
+};
+
+Q2: Distinct Permutations of a String (GeekforGeeks)
+
+class Solution {
+  public:
+    void permutations(string& s, vector<string>& ans, int idx, int n) {
+        if(idx == n) {
+            ans.push_back(s);
+            return;
+        }
+        
+        vector<bool> seen(26, 0);
+        for(int i = idx; i < n; ++i)
+        {
+            if(seen[s[i] - 'A'] == 0)
+            {
+                swap(s[i], s[idx]);
+                permutations(s, ans, idx + 1, n);
+                swap(s[i], s[idx]);
+                
+                seen[s[i] - 'A'] = 1;
+            }
+        }
+    }
+  
+    vector<string> findPermutation(string &s) {
+        // Code here
+        vector<string> ans;
+        permutations(s, ans, 0, s.size());
+        return ans;
+    }
+};
+
+Q3: Permutations II (Leetcode 47)
+
+class Solution {
+public:
+    void permutations(vector<int>& nums, vector<vector<int>>& ans, int idx, int n) {
+        if(idx == n) {
+            ans.push_back(nums);
+            return;
+        }
+        
+        vector<bool> seen(21, 0);
+        for(int i = idx; i < n; ++i)
+        {
+            if(seen[nums[i] + 10] == 0)
+            {
+                swap(nums[i], nums[idx]);
+                permutations(nums, ans, idx + 1, n);
+                swap(nums[i], nums[idx]);
+                
+                seen[nums[i] + 10] = 1;
+            }
+        }
+    }
+
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int>> ans;
+        permutations(nums, ans, 0, nums.size());
+        return ans;
+    }
+};
