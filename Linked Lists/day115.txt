@@ -1,0 +1,114 @@
+Q1. Reverse Linked List (Leetcode 206)
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *prev = nullptr, *curr = head, *next = nullptr;
+
+        while(curr != nullptr)
+        {
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+};
+
+Q2. Middle of the Linked List (Leetcode 876)
+
+// Less Elegant (but mine)
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode *slow = head, *fast = head;
+        while(slow->next != nullptr && fast->next != nullptr && fast->next->next != nullptr)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        if(fast->next != nullptr)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        return slow;
+    }
+};
+
+// More Elegant (but chatgpt)
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode *slow = head;
+        ListNode *fast = head;
+
+        while (fast != nullptr && fast->next != nullptr) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        return slow;
+    }
+};
+
+Q3. Rotate List (Leetcode 61)
+
+// My approach
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *prev = nullptr, *curr = head, *next = nullptr;
+
+        while(curr != nullptr)
+        {
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(head == nullptr || head->next == nullptr) return head;
+        int n = 0;
+        ListNode* temp = head;
+        while(temp != nullptr)
+        {
+            n++;
+            temp = temp->next;
+        }
+        k = k % n;
+        if (k == 0) return head;
+        head = reverseList(head);
+
+        ListNode* prev = nullptr;
+        temp = head;
+        for(int i = 0; i < k; ++i)
+        {
+            prev = temp;
+            temp = temp->next;
+        }
+        prev->next = nullptr;
+        head = reverseList(head);
+        temp = reverseList(temp);
+
+        prev = nullptr;
+        ListNode* temp2 = head;
+        for(int i = 0; i < k; ++i)
+        {
+            prev = temp2;
+            temp2 = temp2->next;
+        }
+        prev->next = temp;
+
+        return head;
+    }
+};
+
+// There is also a circular list approach but I don't know it yet
+// I mean my method is also O(N) O(1)
