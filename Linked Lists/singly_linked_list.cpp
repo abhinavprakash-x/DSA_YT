@@ -107,6 +107,19 @@ void deleteAtEnd(Node*& head) {
     current->next = nullptr;
 }
 
+void reverse(Node*& head) {
+    Node* prev = nullptr;
+    Node* current = head;
+    Node* next = nullptr;
+    while (current != nullptr) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    head = prev;
+}
+
 int main()
 {
     Node* head = new Node(1);
@@ -125,6 +138,8 @@ int main()
     deleteAtEnd(head);
     deleteAtPosition(head, 1);
 
+    traverse(head);
+    reverse(head);
     traverse(head);
 
     return 0;

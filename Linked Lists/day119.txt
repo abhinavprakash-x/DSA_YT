@@ -1,0 +1,26 @@
+Q1. Insertion in a Doubly Linked List (GeekforGeeks)
+
+class Solution {
+  public:
+    Node* insertAtPos(Node* head, int p, int x) {
+        // code here
+        int pos = 0;
+        Node* temp = head;
+        
+        while(pos != p && temp != nullptr)
+        {
+            pos++;
+            temp = temp->next;
+        }
+        Node* ptr = new Node(x);
+        ptr->next = temp->next;
+        ptr->prev = temp;
+        if(temp->next != nullptr) temp->next->prev = ptr;
+        temp->next = ptr;
+        
+        return head;
+    }
+};
+
+Q2. Reverse a Doubly Linked List (GeekforGeeks)
+
