@@ -1,0 +1,104 @@
+Q1. Remove Duplicates in Sorted Linked List (GeekforGeeks)
+
+class Solution {
+  public:
+    Node* removeDuplicates(Node* head) {
+        // code here
+        if(head == nullptr || head->next == nullptr) return head;
+        
+        Node* backward = head;
+        Node* forward = head->next;
+        
+        while(forward != nullptr)
+        {
+            if(backward->data == forward->data)
+            {
+                forward = forward->next;
+                backward->next = forward;
+                continue;
+            }
+            else
+            {
+                backward = backward->next;
+                forward = forward->next;
+            }
+        }
+        
+        return head;
+    }
+};
+
+Q2. Merge two Sorted Linked List (GeekforGeeks)
+
+class Solution {
+  public:
+    Node* sortedMerge(Node* head1, Node* head2) {
+        // code here
+        Node sorted(0);
+        Node* ptr = &sorted;
+        
+        while(head1 != nullptr && head2 != nullptr)
+        {
+            if(head1->data <= head2->data)
+            {
+                ptr->next = head1;
+                head1 = head1->next;
+            }
+            else
+            {
+                ptr->next = head2;
+                head2 = head2->next;
+            }
+            ptr = ptr->next;
+        }
+        if(head1 != nullptr) ptr->next = head1;
+        if(head2 != nullptr) ptr->next = head2;
+        
+        return sorted.next;
+    }
+};
+
+Q3. Sort a linked list of 0s, 1s and 2s (GeekforGeeks)
+
+class Solution {
+  public:
+    Node* segregate(Node* head) {
+        // code here
+        Node zero(-1), one(-1), two(-1);
+        Node *zero_ptr = &zero, *one_ptr = &one, *two_ptr = &two, *ptr = head;
+        
+        while(ptr != nullptr)
+        {
+            if(ptr->data == 0)
+            {
+                zero_ptr->next = ptr;
+                zero_ptr = zero_ptr->next;
+            }
+            else if(ptr->data == 1)
+            {
+                one_ptr->next = ptr;
+                one_ptr = one_ptr->next;
+            }
+            else
+            {
+                two_ptr->next = ptr;
+                two_ptr = two_ptr->next;
+            }
+            ptr = ptr->next;
+        }
+
+        zero_ptr->next = one.next ? one.next : two.next;
+        one_ptr->next = two.next;
+        two_ptr->next = nullptr;
+
+        if (zero.next) return zero.next;
+        else if (one.next) return one.next;
+        else return two.next;
+    }
+};
+
+Q4. Merge Lists Alternatingly (GeekforGeeks)
+https://www.geeksforgeeks.org/problems/merge-list-alternatingly/1
+
+Q5. Rearrange a linked list (GeekforGeeks)
+https://www.geeksforgeeks.org/problems/rearrange-a-linked-list/1
