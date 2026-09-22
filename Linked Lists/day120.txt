@@ -98,7 +98,51 @@ class Solution {
 };
 
 Q4. Merge Lists Alternatingly (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/merge-list-alternatingly/1
+
+class Solution {
+  public:
+    vector<Node *> mergeList(Node *head1, Node *head2) {
+        // code Here
+        Node dummy(0);
+        Node *ptr = &dummy;
+        
+        while(head1 != nullptr && head2 != nullptr)
+        {
+            ptr->next = head1;
+            head1 = head1->next;
+            ptr = ptr->next;
+            
+            ptr->next = head2;
+            head2 = head2->next;
+            ptr = ptr->next;
+        }
+        ptr->next = head1;
+        
+        return {dummy.next, head2};
+    }
+};
 
 Q5. Rearrange a linked list (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/rearrange-a-linked-list/1
+
+class Solution {
+public:
+    void rearrangeEvenOdd(Node *head) {
+
+        if (head == nullptr || head->next == nullptr) return;
+
+        Node *odd = head;
+        Node *even = head->next;
+        Node *evenHead = even;
+
+        while (even != nullptr && even->next != nullptr)
+        {
+            odd->next = even->next;
+            odd = odd->next;
+
+            even->next = odd->next;
+            even = even->next;
+        }
+
+        odd->next = evenHead;
+    }
+};

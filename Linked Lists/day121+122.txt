@@ -1,0 +1,131 @@
+Q1. Detect Loop in Linked List (GeekforGeeks)
+
+class Solution {
+  public:
+    bool detectLoop(Node* head) {
+        // code here
+        if(head == nullptr || head->next == nullptr) return false;
+        Node *slow = head, *fast = head->next;
+        
+        while(fast != nullptr && fast->next != nullptr)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+            
+            if(slow == fast) return true;
+        }
+        return false;
+    }
+};
+
+Q2. Cycle Length in Linked List (GeekforGeeks)
+
+class Solution {
+  public:
+    int lengthOfLoop(Node *head) {
+        // code here
+        if(!head || !head->next) return 0;
+        
+        bool loop = false;
+        int length = 0;
+        Node *slow = head, *fast = head->next;
+        
+        while(fast && fast->next)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+            
+            if(slow == fast)
+            {
+                loop = true;
+                break;
+            }
+        }
+        if(!loop) return 0;
+        
+        while(slow->next != fast)
+        {
+            length++;
+            slow = slow->next;
+        }
+        
+        return length + 1;
+    }
+};
+
+Q3. Remove Cycle in Linked List (GeekforGeeks)
+
+class Solution {
+  public:
+    void removeLoop(Node* head) {
+        // code here
+        if(!head || !head->next) return;
+        Node *slow = head, *fast = head;
+        bool loop = false;
+
+        while(fast && fast->next)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+
+            if(slow == fast)
+            {
+                loop = true;
+                break;
+            }
+        }
+        if(!loop) return;
+        
+        slow = head;
+        while(slow != fast)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        
+        while(slow->next != fast) slow = slow->next;
+        slow->next = nullptr;
+    }
+};
+
+Q4. Circular Linked List Traversal (GeekforGeeks)
+
+class Solution {
+  public:
+    void printList(Node* head) {
+        // code here
+        std::cout << head->data << " ";
+        
+        Node *ptr = head->next;
+        while(ptr != head)
+        {
+            std::cout << ptr->data << " ";
+            ptr = ptr->next;
+        }
+    }
+};
+
+Q5. Check If Circular Linked List (GeekforGeeks)
+
+class Solution {
+  public:
+    bool isCircular(Node *head) {
+        // code here
+        Node *ptr = head;
+        while(ptr != nullptr)
+        {
+            ptr = ptr->next;
+            if(ptr == head) return true;
+        }
+        return false;
+    }
+};
+
+Q6. Split a Linked List Into Halves (GeekforGeeks)
+https://www.geeksforgeeks.org/problems/split-a-circular-linked-list-into-two-halves/1
+
+Q7. Insert in Sorted Circular Linked List (GeekforGeeks)
+https://www.geeksforgeeks.org/problems/sorted-insert-for-circular-linked-list/1
+
+Q8. Intersection in Y Shaped Lists (GeekforGeeks)
+https://www.geeksforgeeks.org/problems/intersection-point-in-y-shapped-linked-lists/1
