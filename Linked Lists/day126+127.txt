@@ -345,13 +345,349 @@ class Solution {
 };
 
 Q6. Clone List with Next and Random (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/clone-a-linked-list-with-next-and-random-pointer/1
+
+// Time O(n^2) Space O(n)
+/* Structure of Linked List Node
+class Node {
+  public:
+    int data;
+    Node* next;
+    Node* random;
+
+    Node(int x) {
+        data = x;
+        next = random = nullptr;
+    }
+};*/
+class Solution {
+  public:
+    Node* cloneLinkedList(Node* head) {
+        // code here
+        Node *ptr = head;
+        Node clone(0);
+        Node *clone_ptr = &clone;
+        
+        while(ptr != nullptr)
+        {
+            clone_ptr->next = new Node(ptr->data);
+            ptr = ptr->next;
+            clone_ptr = clone_ptr->next;
+        }
+        clone_ptr->next = nullptr;
+        
+        ptr = head;
+        clone_ptr = clone.next;
+        
+        while(ptr != nullptr)
+        {
+            Node *temp = head;
+            int distance = 0;
+            
+            while(temp != ptr->random)
+            {
+                temp = temp->next;
+                distance++;
+            }
+            distance++;
+            
+            temp = clone.next;
+            while(--distance) temp = temp->next;
+            
+            clone_ptr->random = temp;
+            
+            ptr = ptr->next;
+            clone_ptr = clone_ptr->next;
+        }
+        
+        return clone.next;
+    }
+};
+
+// Time O(n) Space O(n)
+class Solution {
+  public:
+    Node* cloneLinkedList(Node* head) {
+        // code here
+        Node *ptr = head;
+        unordered_map<Node*, Node*> mp;
+        
+        Node clone(0);
+        Node *clone_ptr = &clone;
+        
+        while(ptr != nullptr)
+        {
+            clone_ptr->next = new Node(ptr->data);
+            mp[ptr] = clone_ptr->next;
+            
+            ptr = ptr->next;
+            clone_ptr = clone_ptr->next;
+        }
+        clone_ptr->next = nullptr;
+        
+        ptr = head;
+        clone_ptr = clone.next;
+        
+        while(ptr != nullptr)
+        {
+            clone_ptr->random = mp[ptr->random];
+            
+            ptr = ptr->next;
+            clone_ptr = clone_ptr->next;
+        }
+        
+        return clone.next;
+    }
+};
+
+// Time O(n) Space O(1)
+class Solution {
+public:
+    Node* cloneLinkedList(Node* head) {
+        if(!head) return nullptr;
+
+        // 1. Insert cloned node after every original node
+        Node* curr = head;
+
+        while(curr)
+        {
+            Node* clone = new Node(curr->data);
+
+            clone->next = curr->next;
+            curr->next = clone;
+
+            curr = clone->next;
+        }
+
+        // 2. Set random pointers of cloned nodes
+        curr = head;
+        while(curr)
+        {
+            Node* clone = curr->next;
+
+            if(curr->random) clone->random = curr->random->next;
+            else clone->random = nullptr;
+
+            curr = clone->next;
+        }
+
+        // 3. Separate original and cloned lists
+        curr = head;
+        Node* cloneHead = head->next;
+        Node* cloneCurr = cloneHead;
+
+        while (curr)
+        {
+            curr->next = cloneCurr->next;
+            curr = curr->next;
+
+            if (curr)
+            {
+                cloneCurr->next = curr->next;
+                cloneCurr = cloneCurr->next;
+            }
+        }
+
+        return cloneHead;
+    }
+};
 
 Q7. Partition a Linked List around a given value (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/partition-a-linked-list-around-a-given-value/1
+
+class Solution {
+public:
+    Node* partition(Node* head, int x) {
+
+        Node small(0);
+        Node equal(0);
+        Node large(0);
+
+        Node* smallTail = &small;
+        Node* equalTail = &equal;
+        Node* largeTail = &large;
+
+        Node* curr = head;
+
+        while (curr)
+        {
+
+            Node* next = curr->next;
+
+            if (curr->data < x)
+            {
+                smallTail->next = curr;
+                smallTail = smallTail->next;
+            }
+            else if (curr->data == x)
+            {
+                equalTail->next = curr;
+                equalTail = equalTail->next;
+            }
+            else
+            {
+                largeTail->next = curr;
+                largeTail = largeTail->next;
+            }
+
+            curr = next;
+        }
+        smallTail->next = equal.next ? equal.next : large.next;
+        equalTail->next = large.next ? large.next : nullptr;
+        largeTail->next = nullptr;
+
+        return small.next;
+    }
+};
 
 Q8. Subtraction in a Linked List (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/subtraction-in-linked-list/1
 
+class Solution {
+public:
+    Node* reverse(Node* head)
+    {
+        Node* prev = nullptr;
+        Node* curr = head;
 
-https://leetcode.com/problems/swap-nodes-in-pairs/description/
+        while (curr)
+        {
+            Node* next = curr->next;
+
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+
+    long long length(Node* head)
+    {
+        long long size = 0;
+
+        while (head)
+        {
+            size++;
+            head = head->next;
+        }
+
+        return size;
+    }
+
+    Node* subLinkedList(Node* head1, Node* head2)
+    {
+        long long len1 = length(head1);
+        long long len2 = length(head2);
+
+        Node* larger;
+        Node* smaller;
+
+        if (len1 > len2)
+        {
+            larger = head1;
+            smaller = head2;
+        }
+        else if (len1 < len2)
+        {
+            larger = head2;
+            smaller = head1;
+        }
+        else
+        {
+            Node* p1 = head1;
+            Node* p2 = head2;
+
+            while(p1 && p1->data == p2->data)
+            {
+                p1 = p1->next;
+                p2 = p2->next;
+            }
+            // both list are same numbers
+            if (!p1) return new Node(0);
+
+            if (p1->data > p2->data)
+            {
+                larger = head1;
+                smaller = head2;
+            }
+            else
+            {
+                larger = head2;
+                smaller = head1;
+            }
+        }
+
+        larger = reverse(larger);
+        smaller = reverse(smaller);
+
+        Node dummy(0);
+        Node* tail = &dummy;
+
+        Node* ptr1 = larger;
+        Node* ptr2 = smaller;
+
+        int borrow = 0;
+
+        while (ptr1)
+        {
+            int x = ptr1->data - borrow;
+            int y = ptr2 ? ptr2->data : 0;
+
+            if (x < y)
+            {
+                x += 10;
+                borrow = 1;
+            }
+            else
+            {
+                borrow = 0;
+            }
+
+            tail->next = new Node(x - y);
+            tail = tail->next;
+
+            ptr1 = ptr1->next;
+            if(ptr2) ptr2 = ptr2->next;
+        }
+        
+        Node* result = reverse(dummy.next);
+        while (result && result->data == 0 && result->next) result = result->next;
+
+        return result;
+    }
+};
+
+Extra Question: Swap Nodes in Pairs (Leetcode 24)
+
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+
+        if (!head || !head->next)
+            return head;
+
+        ListNode dummy(0);
+        dummy.next = head;
+
+        ListNode* prev = &dummy;
+        ListNode* curr = head;
+        ListNode* next = head->next;
+
+        while (curr && next) {
+
+            // Connect previous part to second node
+            prev->next = next;
+
+            // Put first node after second
+            curr->next = next->next;
+            next->next = curr;
+
+            // Move to next pair
+            prev = curr;
+            curr = curr->next;
+
+            if (curr)
+                next = curr->next;
+        }
+
+        return dummy.next;
+    }
+};
