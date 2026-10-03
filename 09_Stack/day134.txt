@@ -1,0 +1,203 @@
+Q1. Reverse a String (Leetcode 344)
+
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+        int n = s.size();
+        for(int i=0; i<(n/2); ++i){
+            swap(s[i],s[n-i-1]);
+        }
+    }
+};
+
+// Using Stack
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+        stack<char> st;
+        for(char c : s) st.push(c);
+
+        int i = 0;
+        while(!st.empty())
+        {
+            s[i++] = st.top();
+            st.pop();
+        }
+    }
+};
+
+Q2. Insert at Bottom of Stack (GeekforGeeks)
+
+class Solution {
+  public:
+    stack<int> insertAtBottom(stack<int> &st, int x)
+    {
+        stack<int> copy;
+        while(!st.empty())
+        {
+            copy.push(st.top());
+            st.pop();
+        }
+        
+        st.push(x);
+        while(!copy.empty())
+        {
+            st.push(copy.top());
+            copy.pop();
+        }
+        
+        return st;
+    }
+};
+
+Q3. Make Array Beautiful (GeekforGeeks)
+
+class Solution {
+public:
+    vector<int> makeBeautiful(vector<int> arr)
+    {
+        stack<int> st;
+        for(int x : arr)
+        {
+            if(st.empty()) st.push(x);
+            else if((st.top() < 0) == (x < 0)) st.push(x);
+            else st.pop();
+        }
+
+        vector<int> ans;
+        while(!st.empty())
+        {
+            ans.push_back(st.top());
+            st.pop();
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+Q4. Remove Two Consecutive Same (GeekforGeeks)
+
+class Solution {
+  public:
+    int removeConsecutiveSame(vector<string>& arr)
+    {
+        stack<string> st;
+        for(string s : arr)
+        {
+            if(st.empty()) st.push(s);
+            else if(st.top() == s) st.pop();
+            else st.push(s);
+        }
+        return st.size();
+    }
+};
+
+Q5. Minimum Add to Make Parantheses Valid (Leetcode 921)
+
+class Solution {
+public:
+    int minAddToMakeValid(string s) {
+        stack<char> st;
+        int n = s.size();
+        int count = 0;
+
+        for(int i = 0; i < n; ++i)
+        {
+            if(s[i] == '(') st.push(s[i]);
+            else
+            {
+                if(st.empty()) count++;
+                else if(st.top() == '(') st.pop();
+            }
+        }
+        count += st.size();
+        return count;
+    }
+};
+
+Q6. valid Parantheses (Leetcode 20)
+
+class Solution {
+public:
+    bool isValid(string s) {
+        int n = s.length();
+        char stack[n];
+        int top = -1;
+
+        for (int i = 0; i < n; i++) {
+            if (s[i] == '(' || s[i] == '{' || s[i] == '[') {
+                push(stack, top, s[i], n);
+            } else {
+                if (!pop(stack, top, s[i])) {
+                    return false;
+                }
+            }
+        }
+        return (top == -1);
+    }
+    void push(char a[], int &top, char b, int size) {
+        if (top < size - 1) {
+            top++;
+            a[top] = b;
+        }
+    }
+    bool pop(char a[], int &top, char b) {
+        if (top == -1) return false;
+        if ((a[top] == '(' && b == ')') ||
+            (a[top] == '{' && b == '}') ||
+            (a[top] == '[' && b == ']')) {
+            top--;
+            return true;
+        }
+        return false;
+    }
+};
+
+Q7. Backspace String Compare (Leetcode 844)
+
+class Solution {
+public:
+    bool backspaceCompare(string s, string t)
+    {
+        stack<char> st;
+        for(char c : s)
+        {
+            if(c == '#' && !st.empty()) st.pop();
+            else if(c == '#' && st.empty()) continue;
+            else st.push(c);
+        }
+        s = "";
+        while(!st.empty())
+        {
+            s += st.top();
+            st.pop();
+        }
+
+        for(char c : t)
+        {
+            if(c == '#' && !st.empty()) st.pop();
+            else if(c == '#' && st.empty()) continue;
+            else st.push(c);
+        }
+        t = "";
+        while(!st.empty())
+        {
+            t += st.top();
+            st.pop();
+        }
+
+        return s == t;
+    }
+};
+
+Q8. Print Bracket Number (GeekforGeeks)
+https://www.geeksforgeeks.org/problems/print-bracket-number4058/1
+
+Q9. Get Min with Stack Pop (GeekforGeeks)
+https://www.geeksforgeeks.org/problems/get-min-at-pop/1
+
+Q10. Get Min from Stack (GeekforGeeks)
+https://www.geeksforgeeks.org/problems/get-minimum-element-from-stack/1
+
+Q11. Sort a Stack (GeekforGeeks)
+https://www.geeksforgeeks.org/problems/sort-a-stack/1
