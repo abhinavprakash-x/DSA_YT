@@ -1,0 +1,274 @@
+Q1. Next Greater Element (GeeksforGeeks)
+
+class Solution {
+  public:
+    vector<int> nextLargerElement(vector<int>& arr) {
+        // code here
+        int n = arr.size();
+        stack<int> st;
+        vector<int> ans(n, -1);
+        
+        for(int i = 0; i < n; ++i)
+        {
+            while(!st.empty() && arr[i] > arr[st.top()])
+            {
+                ans[st.top()] = arr[i];
+                st.pop();
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+};
+
+Q2. Next Smaller Element (naukri.com)
+
+#include <bits/stdc++.h>
+vector<int> nextSmallerElement(vector<int> &arr, int n)
+{
+    stack<int> st;
+    vector<int> ans(n, -1);
+
+    for(int i = 0; i < n; ++i)
+    {
+        while(!st.empty() && arr[i] < arr[st.top()])
+        {
+            ans[st.top()] = arr[i];
+            st.pop();
+        }
+        st.push(i);
+    }
+    return ans;
+}
+
+Q3. Previous Smaller Element (GeeksforGeeks)
+
+class Solution {
+  public:
+    vector<int> prevSmaller(vector<int>& arr) {
+        //  code here
+        int n = arr.size();
+        vector<int> ans(n, -1);
+        stack<int> st;
+        
+        for(int i = n - 1; i >= 0; --i)
+        {
+            while(!st.empty() && arr[st.top()] > arr[i])
+            {
+                ans[st.top()] = arr[i];
+                st.pop();
+            }
+            st.push(i);
+        }
+        
+        return ans;
+    }
+};
+
+Q4. Stock Span Problem (GeeksforGeeks)
+
+class Solution {
+  public:
+    vector<int> calculateSpan(vector<int>& arr)
+    {
+        int n = arr.size();
+        stack<int> st;
+        vector<int> ans(n, 1);
+        
+        for(int i = n - 1; i > -1; --i)
+        {
+            while(!st.empty() && arr[i] > arr[st.top()])
+            {
+                ans[st.top()] = st.top() - i;
+                st.pop();
+            }
+            st.push(i);
+        }
+        
+        while(!st.empty())
+        {
+            ans[st.top()] = st.top() + 1;
+            st.pop();
+        }
+        
+        return ans;
+    }
+};
+
+Q5. Next Greater in Circular Array (GeeksforGeeks)
+
+class Solution {
+  public:
+    vector<int> nextGreater(vector<int> &arr)
+    {
+        stack<int> st;
+        int n = arr.size();
+        vector<int> ans(n, -1);
+        
+        for(int i = 0; i < 2 * n; ++i)
+        {
+            int pos = i % n;
+            
+            while(!st.empty() && arr[pos] > arr[st.top()])
+            {
+                ans[st.top()] = arr[pos];
+                st.pop();
+            }
+            st.push(pos);
+        }
+        return ans;
+    }
+};
+
+Q6. Opposite Sign Pair Reduction (GeeksforGeeks)
+
+class Solution {
+public:
+    vector<int> reducePairs(vector<int>& arr)
+    {
+        stack<int> st;
+
+        for(int x : arr)
+        {
+            bool alive = true;
+
+            while(alive && !st.empty() && ((x < 0) != (st.top() < 0)))
+            {
+                int top = st.top();
+                
+                if(abs(x) > abs(top)) st.pop();
+                else if(abs(x) < abs(top)) alive = false;
+                
+                else
+                {
+                    st.pop();
+                    alive = false;
+                }
+            }
+
+            if(alive) st.push(x);
+        }
+
+        vector<int> ans;
+        while (!st.empty())
+        {
+            ans.push_back(st.top());
+            st.pop();
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+Q7. Baseball Game (Leetcode 682)
+
+class Solution {
+public:
+    int calPoints(vector<string>& operations) {
+        stack<int> st;
+
+        for (string s : operations) {
+
+            if (s == "+") {
+                int n1 = st.top();
+                st.pop();
+
+                int n2 = st.top();
+
+                st.push(n1);
+                st.push(n1 + n2);
+            }
+            else if (s == "D") {
+                st.push(2 * st.top());
+            }
+            else if (s == "C") {
+                st.pop();
+            }
+            else {
+                st.push(stoi(s));
+            }
+        }
+
+        int sum = 0;
+
+        while (!st.empty()) {
+            sum += st.top();
+            st.pop();
+        }
+
+        return sum;
+    }
+};
+
+Q8. Remove K Digits (GeeksforGeeks)
+
+class Solution {
+public:
+    string removeKdig(string &s, int k) {
+        stack<char> st;
+
+        for (char c : s)
+        {
+            while (!st.empty() && k > 0 && st.top() > c)
+            {
+                st.pop();
+                k--;
+            }
+            st.push(c);
+        }
+
+        while (k > 0)
+        {
+            st.pop();
+            k--;
+        }
+
+        string ans;
+        while (!st.empty())
+        {
+            ans += st.top();
+            st.pop();
+        }
+        reverse(ans.begin(), ans.end());
+
+        int i = 0;
+        while (i < ans.size() && ans[i] == '0')
+        {
+            i++;
+        }
+        ans = ans.substr(i);
+        return ans.empty() ? "0" : ans;
+    }
+};
+
+Q9. Next Greater Element 1 (Leetcode 496)
+
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums2.size();
+
+        stack<int> st;
+        unordered_map<int, int> ans;
+
+        for (int i = 0; i < n; ++i) {
+
+            while (!st.empty() && nums2[i] > nums2[st.top()]) {
+                ans[nums2[st.top()]] = nums2[i];
+                st.pop();
+            }
+
+            st.push(i);
+        }
+
+        int m = nums1.size();
+        vector<int> ans2(m, -1);
+
+        for (int i = 0; i < m; ++i) {
+            if (ans.count(nums1[i]))
+                ans2[i] = ans[nums1[i]];
+        }
+
+        return ans2;
+    }
+};

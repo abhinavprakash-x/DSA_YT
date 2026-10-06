@@ -191,13 +191,122 @@ public:
 };
 
 Q8. Print Bracket Number (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/print-bracket-number4058/1
+
+class Solution {
+  public:
+    vector<int> bracketNumbers(string &s)
+    {
+        vector<int> ans;
+        stack<int> st;
+        int counter = 0;
+        
+        for(char c : s)
+        {
+            if(c == '(')
+            {
+                counter++;
+                ans.push_back(counter);
+                st.push(counter);
+            }
+            else if(c == ')')
+            {
+                ans.push_back(st.top());
+                st.pop();
+            }
+        }
+        
+        return ans;
+    }
+};
 
 Q9. Get Min with Stack Pop (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/get-min-at-pop/1
+
+stack<int> _push(int arr[], int n)
+{
+    stack<int> st;
+    int curr_min = arr[0];
+    for(int i = 0; i < n; ++i)
+    {
+        curr_min = min(curr_min, arr[i]);
+        st.push(curr_min);
+    }
+    return st;
+}
+
+void _getMinAtPop(stack<int> s)
+{
+    while(!s.empty())
+    {
+        cout << s.top() << " ";
+        s.pop();
+    }
+}
 
 Q10. Get Min from Stack (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/get-minimum-element-from-stack/1
+
+class SpecialStack
+{
+    stack<int> st;
+    stack<int> mn;
+    int top;
+    
+public:
+    SpecialStack() : top(-1) {}
+
+    void push(int x)
+    {
+        int cmin;
+        
+        if(mn.empty()) cmin = x;
+        else cmin = (mn.top() < x) ? mn.top() : x;
+        
+        st.push(x);
+        mn.push(cmin);
+        top++;
+    }
+
+    void pop()
+    {
+        if(!st.empty())
+        {
+            mn.pop();
+            st.pop();
+            top--;
+        }
+    }
+
+    int peek()
+    {
+        if(st.empty()) return -1;
+        return st.top();
+    }
+
+    bool isEmpty()
+    {
+        return top == -1;
+    }
+
+    int getMin()
+    {
+        return mn.empty() ? -1 : mn.top();
+    }
+};
 
 Q11. Sort a Stack (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/sort-a-stack/1
+
+class Solution {
+  public:
+    void sortStack(stack<int> &st)
+    {
+        vector<int> arr;
+        while(!st.empty())
+        {
+            arr.push_back(st.top());
+            st.pop();
+        }
+        sort(arr.begin(), arr.end());
+        
+        for(int x : arr)
+            st.push(x);
+    }
+};
