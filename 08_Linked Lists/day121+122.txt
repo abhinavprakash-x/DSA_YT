@@ -122,10 +122,112 @@ class Solution {
 };
 
 Q6. Split a Linked List Into Halves (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/split-a-circular-linked-list-into-two-halves/1
+
+class Solution {
+  public:
+    pair<Node *, Node *> splitList(struct Node *head) {
+        if(head == nullptr || head->next == head)
+                    return {head, nullptr};
+        
+        Node* slow = head;
+        Node* fast = head;
+        
+        while(fast->next != head && fast->next->next != head)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        if(fast->next->next == head)
+            fast = fast->next;
+                    
+        Node* head2 = slow->next;
+        fast->next = head2;
+        slow->next = head;
+        
+        return {head, head2};
+    }
+};
 
 Q7. Insert in Sorted Circular Linked List (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/sorted-insert-for-circular-linked-list/1
+
+class Solution {
+  public:
+    Node* sortedInsert(Node* head, int data)
+    {
+        Node *temp = new Node(data);
+
+        if(data <= head->data)
+        {
+            Node *ptr = head;
+
+            while(ptr->next != head)
+                ptr = ptr->next;
+
+            ptr->next = temp;
+            temp->next = head;
+            return temp;
+        }
+
+        Node *ptr = head;
+
+        while(ptr->next != head && ptr->next->data < data)
+            ptr = ptr->next;
+
+        temp->next = ptr->next;
+        ptr->next = temp;
+
+        return head;
+    }
+};
 
 Q8. Intersection in Y Shaped Lists (GeekforGeeks)
-https://www.geeksforgeeks.org/problems/intersection-point-in-y-shapped-linked-lists/1
+
+class Solution {
+  public:
+    Node* intersectPoint(Node* head1, Node* head2)
+    {
+        int count1 = 0, count2 = 0;
+        
+        Node *ptr1 = head1;
+        Node *ptr2 = head2;
+        
+        while(ptr1)
+        {
+            ptr1 = ptr1->next;
+            count1++;
+        }
+        ptr1 = head1;
+        
+        while(ptr2)
+        {
+            ptr2 = ptr2->next;
+            count2++;
+        }
+        ptr2 = head2;
+        
+        if(count1 < count2)
+        {
+            int fwd = count2 - count1;
+            while(fwd--)
+                ptr2 = ptr2->next;
+        }
+        else
+        {
+            int fwd = count1 - count2;
+            while(fwd--)
+                ptr1 = ptr1->next;
+        }
+        
+        while(ptr1 && ptr2)
+        {
+            if(ptr1->next == ptr2->next)
+                return ptr1->next;
+                
+            ptr1 = ptr1->next;
+            ptr2 = ptr2->next;
+        }
+        
+        return nullptr;
+    }
+};
