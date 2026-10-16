@@ -1,0 +1,239 @@
+Q1. Largest Rectangle in Histogram (Leetcode 84)
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        vector<int> Right(n, n);
+        vector<int> Left(n, -1);
+        stack<int> st;
+
+        for(int i = 0; i < n; ++i)
+        {
+            while(!st.empty() && heights[st.top()] > heights[i])
+            {
+                Right[st.top()] = i;
+                st.pop();
+            }
+            st.push(i);
+        }
+        while(!st.empty()) st.pop();
+
+        for(int i = n - 1; i > -1; --i)
+        {
+            while(!st.empty() && heights[st.top()] > heights[i])
+            {
+                Left[st.top()] = i;
+                st.pop();
+            }
+            st.push(i);
+        }
+
+        int ans = INT_MIN;
+        for(int i = 0; i < n; ++i)
+            ans = max(ans, heights[i] * (Right[i] - Left[i] - 1));
+
+        return ans;
+    }
+};
+
+OR
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> st;
+        int n = heights.size();
+        int ans = INT_MIN;
+
+        for(int i = 0; i < n; ++i)
+        {
+            while(!st.empty() && heights[st.top()] > heights[i])
+            {
+                int idx = st.top();
+                st.pop();
+
+                int left = st.empty() ? -1 : st.top();
+                ans = max(ans, heights[idx] * (i - left - 1));
+            }
+            st.push(i);
+        }
+        while(!st.empty())
+        {
+            int idx = st.top();
+            st.pop();
+
+            int left = st.empty() ? -1 : st.top();
+            ans = max(ans, heights[idx] * (n - left - 1));
+        }
+        return ans;
+    }
+};
+
+Q2. Maximal Rectangle (Leetcode 85)
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> st;
+        int n = heights.size();
+        int ans = INT_MIN;
+
+        for(int i = 0; i < n; ++i)
+        {
+            while(!st.empty() && heights[st.top()] > heights[i])
+            {
+                int idx = st.top();
+                st.pop();
+
+                int left = st.empty() ? -1 : st.top();
+                ans = max(ans, heights[idx] * (i - left - 1));
+            }
+            st.push(i);
+        }
+        while(!st.empty())
+        {
+            int idx = st.top();
+            st.pop();
+
+            int left = st.empty() ? -1 : st.top();
+            ans = max(ans, heights[idx] * (n - left - 1));
+        }
+        return ans;
+    }
+
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+        vector<int> heights(m);
+
+        for(int i = 0; i < m; ++i)
+            heights[i] = matrix[0][i] - '0';
+
+        int area = largestRectangleArea(heights);
+
+        for(int i = 1; i < n; ++i)
+        {
+            for(int j = 0; j < m; ++j)
+            {
+                if(matrix[i][j] == '1')
+                    heights[j]++;
+                else
+                    heights[j] = 0;
+            }
+
+            area = max(area, largestRectangleArea(heights));
+        }
+        return area;
+    }
+};
+
+Q3. The Celebrity Problem (GeeksforGeeks)
+
+class Solution {
+  public:
+    int celebrity(vector<vector<int>>& mat) {
+        // code here
+        int n = mat.size();
+        
+        for(int i = 0; i < n; ++i)
+        {
+            bool celeb = true;
+            
+            for(int j = 0; j < n; ++j)
+            {
+                if(i != j && mat[i][j] == 1)
+                {
+                    celeb = false;
+                    break;
+                }
+            }
+            
+            if(celeb)
+            {
+                for(int j = 0; j < n; ++j)
+                {
+                    if(mat[j][i] == 1 || j == i) continue;
+                    else
+                    {
+                        celeb = false;
+                        break;
+                    }
+                }
+            }
+            
+            if(celeb) return i;
+        }
+        return -1;
+    }
+};
+
+OR
+
+class Solution {
+  public:
+    int celebrity(vector<vector<int>>& mat) {
+        // code here
+        stack<int> st;
+        int n = mat.size();
+        
+        for(int i = n - 1; i >= 0; --i)
+            st.push(i);
+            
+        while(st.size() > 1)
+        {
+            int first = st.top(); st.pop();
+            int second = st.top(); st.pop();
+            
+            if(mat[first][second] && !mat[second][first]) st.push(second);
+            else if(!mat[first][second] && mat[second][first]) st.push(first);
+        }
+        
+        if(st.empty()) return -1;
+        
+        int celeb = st.top();
+        int sum_row = 0, sum_col = 0;
+        
+        for(int i = 0; i < n; ++i)
+        {
+            sum_row += mat[celeb][i];
+            sum_col += mat[i][celeb];
+        }
+        sum_row -= mat[celeb][celeb];
+        sum_col -= mat[celeb][celeb];
+
+        return (sum_row == 0 && sum_col == n - 1) ? celeb : -1;
+    }
+};
+
+Q4. MAXSPPROD (Interviewbit)
+
+int Solution::maxSpecialProduct(vector<int> &A) {
+    int n = A.size();
+    vector<int> left(n, 0), right(n, 0);
+    stack<int> st;
+
+    for(int i = 0; i < n; ++i)
+    {
+        while(!st.empty() && A[st.top()] <= A[i]) st.pop();
+        if(!st.empty()) left[i] = st.top();
+        st.push(i);
+    }
+
+    while(!st.empty()) st.pop();
+    for(int i = n - 1; i >= 0; --i)
+    {
+        while(!st.empty() && A[st.top()] <= A[i]) st.pop();
+        if(!st.empty()) right[i] = st.top();
+        st.push(i);
+    }
+
+    long long ans = 0;
+
+    for(int i = 0; i < n; ++i)
+        ans = max(ans, 1LL * left[i] * right[i]);
+
+    return ans % 1000000007;
+}
+
+Q5. Trapping Rain Water (Leetcode 42)
