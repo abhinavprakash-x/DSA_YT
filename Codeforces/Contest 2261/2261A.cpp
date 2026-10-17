@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    int t;
+    cin >> t;
+
+    while (t--)
+    {
+        // code here
+        int n;
+        string s;
+        cin >> n >> s;
+
+        int cnt = 0;
+        int first = -1, last = -1;
+
+        for(int i = 0; i < n; ++i)
+        {
+            if(s[i] == '1')
+            {
+                if(first == -1) first = i;
+                last = i;
+
+                cnt++;
+            }
+        }
+
+        if(cnt <= 2) cout << cnt - 1 << '\n';
+        else cout << last - first << '\n';
+    }
+    return 0;
+}
