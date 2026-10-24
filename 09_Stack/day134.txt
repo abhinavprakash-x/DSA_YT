@@ -26,7 +26,7 @@ public:
     }
 };
 
-Q2. Insert at Bottom of Stack (GeekforGeeks)
+Q2. Insert at Bottom of Stack (GeeksforGeeks)
 
 class Solution {
   public:
@@ -50,7 +50,7 @@ class Solution {
     }
 };
 
-Q3. Make Array Beautiful (GeekforGeeks)
+Q3. Make Array Beautiful (GeeksforGeeks)
 
 class Solution {
 public:
@@ -75,7 +75,7 @@ public:
     }
 };
 
-Q4. Remove Two Consecutive Same (GeekforGeeks)
+Q4. Remove Two Consecutive Same (GeeksforGeeks)
 
 class Solution {
   public:
@@ -190,7 +190,7 @@ public:
     }
 };
 
-Q8. Print Bracket Number (GeekforGeeks)
+Q8. Print Bracket Number (GeeksforGeeks)
 
 class Solution {
   public:
@@ -219,7 +219,7 @@ class Solution {
     }
 };
 
-Q9. Get Min with Stack Pop (GeekforGeeks)
+Q9. Get Min with Stack Pop (GeeksforGeeks)
 
 stack<int> _push(int arr[], int n)
 {
@@ -242,7 +242,7 @@ void _getMinAtPop(stack<int> s)
     }
 }
 
-Q10. Get Min from Stack (GeekforGeeks)
+Q10. Get Min from Stack (GeeksforGeeks)
 
 class SpecialStack
 {
@@ -292,7 +292,7 @@ public:
     }
 };
 
-Q11. Sort a Stack (GeekforGeeks)
+Q11. Sort a Stack (GeeksforGeeks)
 
 class Solution {
   public:

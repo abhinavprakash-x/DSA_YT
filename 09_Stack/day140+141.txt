@@ -1,0 +1,232 @@
+Q1. Get Minimum Element from Stack (GeeksforGeeks)
+Already done, see day 134 Q10
+We can also use modular arithmetic to store min and num in one Stack
+using formula s[i] = num * 101 + min;
+
+Q2. Max of Min for Every Window Size (GeeksforGeeks)
+
+class Solution {
+  public:
+    vector<int> maxOfMins(vector<int>& arr) {
+        //  code here
+        int n = arr.size();
+        vector<int> Right(n, n);
+        vector<int> Left(n, -1);
+        stack<int> st;
+        
+        //find next smallest right for all elements O(n)
+        for(int i = 0; i < n; ++i)
+        {
+            while(!st.empty() && arr[st.top()] > arr[i])
+            {
+                Right[st.top()] = i;
+                st.pop();
+            }
+            st.push(i);
+        }
+        while(!st.empty()) st.pop();
+        
+        //find next smallest left for all elements O(n)
+        for(int i = n - 1; i >= 0; --i)
+        {
+            while(!st.empty() && arr[st.top()] > arr[i])
+            {
+                Left[st.top()] = i;
+                st.pop();
+            }
+            st.push(i);
+        }
+        while(!st.empty()) st.pop();
+        
+        vector<int> ans(n, 0);
+        
+        //fill maximums
+        for(int i = 0; i < n; ++i)
+        {
+            int window = Right[i] - Left[i] - 1;
+            ans[window - 1] = max(ans[window - 1], arr[i]);
+        }
+        
+        //FIll left spaces
+        for(int i = n - 2; i >= 0; --i)
+            ans[i] = max(ans[i], ans[i + 1]);
+        
+        return ans;
+    }
+};
+
+Q3. Longest Valid Parentheses Substring (GeeksforGeeks)
+
+class Solution {
+public:
+    int maxLength(string& s) {
+        stack<int> st;
+        st.push(-1);
+        int ans = 0;
+
+        for(int i = 0; i < s.size(); ++i)
+        {
+            if(s[i] == '(') st.push(i);
+            
+            else
+            {
+                st.pop();
+
+                if(st.empty()) st.push(i);
+                else ans = max(ans, i - st.top());
+            }
+        }
+
+        return ans;
+    }
+};
+
+Q3. b. Longest Valid Parentheses Substring (Leetcode 32)
+
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        stack<int> st;
+        st.push(-1);
+        int ans = 0;
+
+        for(int i = 0; i < s.size(); ++i)
+        {
+            if(s[i] == '(') st.push(i);
+            
+            else
+            {
+                st.pop();
+
+                if(st.empty()) st.push(i);
+                else ans = max(ans, i - st.top());
+            }
+        }
+
+        return ans;
+    }
+};
+
+Q4. Two Stacks in an Array (GeeksforGeeks)
+
+class twoStacks {
+    int arr[100];
+    int size = 100;
+    int top1, top2;
+
+  public:
+    twoStacks() {
+        // Initialize the top pointers of both stacks
+        top1 = -1;
+        top2 = 100;
+    }
+
+    void push1(int x) {
+        // Insert the given element at the top of the first stack
+        if(top1 == top2 - 1) return;
+        top1++;
+        arr[top1] = x;
+    }
+
+    void push2(int x) {
+        // Insert the given element at the top of the second stack
+        if(top1 == top2 - 1) return;
+        top2--;
+        arr[top2] = x;
+    }
+
+    int pop1() {
+        // Remove and return the top element of the first stack
+        // Return -1 if the stack is empty
+        if(top1 == -1) return -1;
+        int x = arr[top1];
+        top1--;
+        return x;
+    }
+
+    int pop2() {
+        // Remove and return the top element of the second stack
+        // Return -1 if the stack is empty
+        if(top2 == 100) return -1;
+        int x = arr[top2];
+        top2++;
+        return x;
+    }
+};
+
+Q5. N Stacks in an Array (naukri.com)
+
+#include <bits/stdc++.h> 
+class Node
+{
+public:
+    int data;
+    Node* next;
+
+    Node() : data(0), next(nullptr) {}
+    Node(int a) : data(a), next(nullptr) {}
+};
+
+class NStack
+{
+private:
+    vector<int> arr;
+    vector<Node*> stacks;
+    stack<int> empty;
+    int size;
+    int max_size;
+public:
+    // Initialize your data structure.
+    NStack(int N, int S)
+    {
+        // Write your code here.
+        stacks.resize(N);
+        arr.resize(S);
+
+        for(int i = S - 1; i >= 0; --i)
+            empty.push(i);
+
+        for(int i = 0; i < N; ++i)
+            stacks[i] = nullptr;
+
+        size = 0;
+        max_size = S;
+    }
+
+    // Pushes 'X' into the Mth stack. Returns true if it gets pushed into the stack, and false otherwise.
+    bool push(int x, int m)
+    {
+        // Write your code here.
+        --m;
+        if(size == max_size) return false;
+
+        Node* temp = new Node(empty.top());
+        empty.pop();
+
+        temp->next = stacks[m];
+        stacks[m] = temp;
+        arr[temp->data] = x;
+        size++;
+
+        return true;
+    }
+
+    // Pops top element from Mth Stack. Returns -1 if the stack is empty, otherwise returns the popped element.
+    int pop(int m)
+    {
+        // Write your code here.
+        --m;
+        if(stacks[m] == nullptr) return -1;
+
+        Node* temp = stacks[m];
+        if(stacks[m]->next == nullptr) stacks[m] = nullptr;
+        else stacks[m] = stacks[m]->next;
+
+        int idx = temp->data;
+        delete temp;
+        empty.push(idx);
+        size--;
+
+        return arr[idx];
+    }
+};
