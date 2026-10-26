@@ -73,7 +73,6 @@ void dequeue() {
 
 Q2. Queue using Linked List (GeeksforGeeks)
 
-
 class Node {
 public:
     int data;

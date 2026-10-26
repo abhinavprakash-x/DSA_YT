@@ -1,0 +1,189 @@
+Q1. Queue Reversal (GeeksforGeeks)
+
+class Solution {
+  public:
+    void reverseQueue(queue<int> &q) {
+        // code here
+        stack<int> st;
+        
+        while(!q.empty())
+        {
+            st.push(q.front());
+            q.pop();
+        }
+        
+        while(!st.empty())
+        {
+            q.push(st.top());
+            st.pop();
+        }
+    }
+};
+
+Q2. Reverse First K of a Queue (GeeksforGeeks)
+
+class Solution {
+  public:
+    queue<int> reverseFirstK(queue<int> q, int k) {
+        // code here
+        if (k < 0 || k > q.size()) return q;
+        
+        stack<int> st;
+        int l = q.size() - k;
+        
+        while(k--)
+        {
+            st.push(q.front());
+            q.pop();
+        }
+        
+        while(!st.empty())
+        {
+            q.push(st.top());
+            st.pop();
+        }
+        
+        while(l--)
+        {
+            q.push(q.front());
+            q.pop();
+        }
+        
+        return q;
+    }
+};
+
+Q3. Time Needed to Buy Tickets (Leetcode 2073)
+
+class Solution {
+public:
+    int timeRequiredToBuy(vector<int>& tickets, int k) {
+        queue<pair<int,int>> q;
+        int n = tickets.size();
+        int time = 0;
+
+        for(int i = 0; i < n; ++i)
+            q.push({i, tickets[i]});
+
+        while(!q.empty())
+        {
+            time++;
+
+            pair<int, int> curr = q.front();
+            curr.second = curr.second - 1;
+
+            if(curr.first == k && curr.second == 0) return time;
+
+            q.pop();
+            if(curr.second > 0) q.push(curr);
+        }
+
+        return -1;
+    }
+};
+
+// int n = tickets.size();
+// int time = 0;
+
+// for(int i = 0; i < n; ++i)
+// {
+//     if(i <= k) time += min(tickets[k], tickets[i]);
+//     else time += min(tickets[k] - 1, tickets[i]);
+// }
+
+// return time;
+
+Q4. Implement Queue using Stacks (Leetcode 232)
+
+class MyQueue {
+private:
+    stack<int> st1;
+    stack<int> st2;
+
+public:
+    MyQueue() {}
+    
+    void push(int x)
+    {
+        st1.push(x);
+    }
+    
+    int pop()
+    {
+        if(empty()) return -1;
+
+        if(st2.empty())
+        {
+            while(!st1.empty())
+            {
+                st2.push(st1.top());
+                st1.pop();
+            }
+        }
+        int x = st2.top();
+        st2.pop();
+        return x;
+    }
+    
+    int peek()
+    {
+        if(empty()) return -1;
+
+        if(st2.empty())
+        {
+            while(!st1.empty())
+            {
+                st2.push(st1.top());
+                st1.pop();
+            }
+        }
+        return st2.top();
+    }
+    
+    bool empty()
+    {
+        return st1.empty() && st2.empty();
+    }
+};
+
+Q5. Implement Stack using Queues (Leetcode 225)
+
+class MyStack {
+private:
+    queue<int> q;
+
+public:
+    MyStack() {}
+
+    void push(int x)
+    {
+        q.push(x);
+
+        int n = q.size();
+        for (int i = 0; i < n - 1; i++)
+        {
+            q.push(q.front());
+            q.pop();
+        }
+    }
+
+    int pop()
+    {
+        if (q.empty()) return -1;
+
+        int x = q.front();
+        q.pop();
+        return x;
+    }
+
+    int top()
+    {
+        if (q.empty()) return -1;
+        return q.front();
+    }
+
+    bool empty()
+    {
+        return q.empty();
+    }
+};
