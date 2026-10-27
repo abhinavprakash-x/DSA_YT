@@ -1,0 +1,47 @@
+Q1. First Negative in Window of Size K (GeeksforGeeks)
+
+class Solution {
+  public:
+    vector<int> firstNegInt(vector<int>& arr, int k) {
+        // code here
+        queue<int> q;
+        vector<int> ans;
+        int n = arr.size();
+        
+        for(int i = 0; i < k - 1; ++i)
+            if(arr[i] < 0) q.push(i);
+            
+        for(int i = k - 1; i < n; ++i)
+        {
+            if(arr[i] < 0) q.push(i);
+            
+            if(q.empty()) ans.push_back(0);
+            else
+            {
+                if(q.front() <= i - k) q.pop();
+                ans.push_back(q.empty() ? 0 : arr[q.front()]);
+            }
+        }
+        return ans;
+    }
+};
+
+Q2. First Non Repeating Character in a Stream of Characters (interviewbit)
+
+string Solution::solve(string A) {
+    unordered_map<char, int> mp;
+    queue<char> q;
+    string ans;
+    
+    for(char c : A)
+    {
+        mp[c]++;
+        q.push(c);
+        
+        while(!q.empty() && mp[q.front()] > 1) q.pop();
+            
+        if(q.empty()) ans += "#";
+        else ans += q.front();
+    }
+    return ans;
+}
