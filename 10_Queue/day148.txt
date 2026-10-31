@@ -1,0 +1,157 @@
+Q1. Sliding Window Maximum (Leetcode 239)
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        deque<int> q;
+        int n = nums.size();
+        vector<int> a;
+
+        for(int i = 0; i < k; ++i)
+        {
+            while(!q.empty() && nums[q.back()] <= nums[i])
+                q.pop_back();
+
+            q.push_back(i);
+        }
+        a.push_back(nums[q.front()]);
+
+        for(int i = k; i < n; ++i)
+        {
+            // Remove expired indices
+            while(!q.empty() && q.front() <= i - k)
+                q.pop_front();
+
+            q.push_back(i);
+
+            // Maintain decreasing order
+            while(!q.empty() && nums[q.back()] <= nums[i])
+                q.pop_back();
+
+            q.push_back(i);
+
+            a.push_back(nums[q.front()]);
+        }
+        return a;
+    }
+};
+
+Q2. Minimum Number of K Consecutive Bit Flips (Leetcode 995)
+
+// I can't solve this on my own
+class Solution {
+public:
+    int minKBitFlips(vector<int>& nums, int k) {
+        int n = nums.size();
+        int flip = 0;
+        queue<int> q;
+        for(int i = 0; i < n; ++i)
+        {
+            if(!q.empty() && q.front() < i)
+                q.pop();
+
+            if(q.size() % 2 == nums[i])
+            {
+                if(i + k - 1 >= n) return -1;
+
+                q.push(i + k - 1);
+                flip++;
+            }
+        }
+        return flip;
+    }
+};
+
+Q3. Gas Station (Leetcode 134)
+
+// My O(n^2) TLE Solution
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n = gas.size();
+        int gas_sum = 0, cost_sum = 0;
+
+        for(int i = 0; i < n; ++i)
+        {
+            gas_sum += gas[i];
+            cost_sum += cost[i];
+        }
+        if(gas_sum < cost_sum) return -1;
+
+        for(int i = 0; i < n; ++i)
+        {
+            if(gas[i] < cost[i]) continue;
+
+            int curr_gas = 0;
+            bool possible = true;
+
+            for(int j = i; j < n + i; ++j)
+            {
+                int idx = j % n;
+                curr_gas += gas[idx] - cost[idx];
+
+                if(curr_gas < 0)
+                {
+                    possible = false;
+                    break;
+                }
+            }
+            if(possible) return i;
+        }
+
+        return -1;
+    }
+};
+
+//Correct Solution
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int total = 0, curr = 0;
+        int start = 0;
+
+        for(int i = 0; i < gas.size(); ++i)
+        {
+            int diff = gas[i] - cost[i];
+
+            total += diff;
+            curr += diff;
+
+            if(curr < 0)
+            {
+                start = i + 1;
+                curr = 0;
+            }
+        }
+
+        return total < 0 ? -1 : start;
+    }
+};
+
+Q4. Count Subarrays with Fixed Bounds (Leetcode 2444)
+
+// This isn't my solution I'm too dumb to do this on my own.
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int minK, int maxK) {
+        int n = nums.size();
+
+        int lastMin = -1;
+        int lastMax = -1;
+        int lastInvalid = -1;
+
+        long long ans = 0;
+
+        for(int i = 0; i < n; ++i) {
+            if(nums[i] == minK) lastMin = i;
+            if(nums[i] == maxK) lastMax = i;
+
+            if(nums[i] < minK || nums[i] > maxK)
+                lastInvalid = i;
+
+            ans += max(0, min(lastMin, lastMax) - lastInvalid);
+        }
+
+        return ans;
+    }
+};
