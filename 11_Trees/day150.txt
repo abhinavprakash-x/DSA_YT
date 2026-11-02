@@ -1,0 +1,84 @@
+Q1. Pre Order Traversal (GeeksforGeeks / Leetcode 144)
+
+class Solution {
+  public:
+    vector<int> preOrder(Node* root)
+    {
+        vector<int> ans;
+        preOrder_r(root, ans);
+        return ans;
+    }
+    
+    void preOrder_r(Node* root, vector<int> &ans)
+    {
+        if(!root) return;
+        
+        ans.push_back(root->data);
+        preOrder_r(root->left, ans);
+        preOrder_r(root->right, ans);
+    }
+};
+
+Q2. In Order Traversal (GeeksforGeeks / Leetcode 94)
+
+class Solution {
+  public:
+    vector<int> inorderTraversal(TreeNode* root)
+    {
+        vector<int> ans;
+        inOrder_r(root, ans);
+        return ans;
+    }
+
+    void inOrder_r(TreeNode* root, vector<int> &ans)
+    {
+        if(!root) return;
+
+        inOrder_r(root->left, ans);
+        ans.push_back(root->val);
+        inOrder_r(root->right, ans);
+    }
+};
+
+Q3. Post Order Traversal (GeeksforGeeks / Leetcode 145)
+
+class Solution {
+  public:
+    vector<int> postorderTraversal(TreeNode* root)
+    {
+        vector<int> ans;
+        postOrder_r(root, ans);
+        return ans;
+    }
+
+    void postOrder_r(TreeNode* root, vector<int> &ans)
+    {
+        if(!root) return;
+
+        postOrder_r(root->left, ans);
+        postOrder_r(root->right, ans);
+        ans.push_back(root->val);
+    }
+};
+
+Q4. Level Order Traversal (GeeksforGeeks / Leetcode 102)
+
+class Solution {
+  public:
+    vector<int> levelOrder(Node *root)
+    {
+        vector<int> ans;
+        queue<Node*> q;
+        q.push(root);
+        
+        while(!q.empty())
+        {
+            if(q.front()->left != nullptr) q.push(q.front()->left);
+            if(q.front()->right != nullptr) q.push(q.front()->right);
+        
+            ans.push_back(q.front()->data);
+            q.pop();
+        }
+        return ans;
+    }
+};
