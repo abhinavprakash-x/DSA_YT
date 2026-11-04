@@ -1,0 +1,151 @@
+1. Size of Binary Tree (GeeksforGeeks)
+
+class Solution {
+  public:
+    void traversal(Node* n, int &s)
+    {
+        if(!n) return;
+        
+        ++s;
+        traversal(n->left, s);
+        traversal(n->right, s);
+    }
+    
+    int getSize(Node* root) {
+        // code here
+        int size = 0;
+        traversal(root, size);
+        return size;
+    }
+};
+
+2. Sum of Binary Tree (GeeksforGeeks)
+
+class Solution {
+  public:
+    void traversal(Node* n, int &s)
+    {
+        if(!n) return;
+
+        s += n->data;
+        traversal(n->left, s);
+        traversal(n->right, s);
+    }
+    
+    int sumBT(Node* root) {
+        // code here
+        int sum = 0;
+        traversal(root, sum);
+        return sum;
+    }
+};
+
+3. Count Leaves in Binary Tree (GeeksforGeeks)
+
+class Solution {
+  public:
+    void traversal(Node* n, int &s)
+    {
+        if(n->left == nullptr && n->right == nullptr)
+        {
+            ++s;
+            return;
+        }
+
+        if(n->left) traversal(n->left, s);
+        if(n->right) traversal(n->right, s);
+    }
+
+    int countLeaves(Node* root) {
+        // code here
+        int count = 0;
+        traversal(root, count);
+        return count;
+    }
+};
+
+4. Count Internal Nodes in Tree (GeeksforGeeks)
+
+class Solution {
+  public:
+    void traversal(Node* n, int &s)
+    {
+        if(!n) return;
+        
+        if(!(n->left == nullptr && n->right == nullptr))
+        {
+            ++s;
+        }
+
+        if(n->left) traversal(n->left, s);
+        if(n->right) traversal(n->right, s);
+    }
+
+    int countNonLeafNodes(Node* root) {
+        // code here
+        int count = 0;
+        traversal(root, count);
+        return count;
+    }
+};
+
+5. Height of Binary Tree (GeeksforGeeks)
+
+class Solution {
+  public:
+    int height(Node* root) {
+        // code here
+        int height = 0;
+        queue<Node*> q;
+        q.push(root);
+        
+        while(!q.empty())
+        {
+            int lvl_size = q.size();
+            height++;
+            
+            for(int i = 0; i < lvl_size; ++i)
+            {
+                Node* temp = q.front();
+                q.pop();
+                
+                if(temp->left) q.push(temp->left);
+                if(temp->right) q.push(temp->right);
+            }
+        }
+        return height - 1;
+    }
+};
+
+6. Largest Value of Every Level (GeeksforGeeks)
+
+class Solution {
+  public:
+    vector<int> largestValues(Node* root)
+    {
+        if(!root) return {-1};
+        
+        vector<int> ans;
+        queue<Node*> q;
+        q.push(root);
+        
+        while(!q.empty())
+        {
+            int n = q.size();
+            int levelMax = INT_MIN;
+            
+            for(int i = 0; i < n; i++)
+            {
+                Node* node = q.front();
+                q.pop();
+                
+                levelMax = max(levelMax, node->data);
+                
+                if(node->left) q.push(node->left);
+                if(node->right) q.push(node->right);
+            }
+            ans.push_back(levelMax);
+        }
+        return ans;
+    }
+};
