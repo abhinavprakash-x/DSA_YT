@@ -1,0 +1,165 @@
+I'm too dumb, all these aren't my solutions at all
+
+1. Construct Tree from Inorder & Preorder (GeeksforGeeks)
+
+/* Structure of a Tree Node
+class Node {
+public:
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = nullptr;
+    }
+}; */
+
+class Solution {
+  public:
+    int find(vector<int> &in, int num, int start, int end)
+    {
+        for(int i = start; i <= end; ++i)
+        {
+            if(in[i] == num) return i;
+        }
+        return -1;
+    }
+  
+    Node* tree(vector<int> &in, vector<int> &pre, int start, int end, int idx)
+    {
+        if(start > end) return nullptr;
+        
+        Node* root = new Node(pre[idx]);
+        int pos = find(in, pre[idx], start, end);
+        
+        root->left = tree(in, pre, start, pos - 1, idx + 1);
+        root->right = tree(in, pre, pos + 1, end, idx + (pos - start) + 1);
+        
+        return root;
+    }
+  
+    Node *buildTree(vector<int> &inorder, vector<int> &preorder) {
+        // code here
+        int n = preorder.size();
+        
+        if(n == 0 || n != inorder.size()) return nullptr;
+        
+        return tree(inorder, preorder, 0, n - 1, 0);
+    }
+};
+
+2. Binary Tree from Inorder and Postorder (GeeksforGeeks)
+
+/* Structure of binary tree node
+class Node {
+  public:
+    int data;
+    Node* left;
+    Node* right;
+    Node(int x) {
+        data = x;
+        left = right = nullptr;
+    }
+}; */
+
+class Solution {
+  public:
+    int find(vector<int> &in, int num, int start, int end)
+    {
+        for(int i = start; i <= end; ++i)
+        {
+            if(in[i] == num) return i;
+        }
+        return -1;
+    }
+
+    Node* tree(vector<int> &in, vector<int> &post, int start, int end, int idx)
+    {
+        if(start > end) return nullptr;
+
+        Node* root = new Node(post[idx]);
+        int pos = find(in, post[idx], start, end);
+
+        root->right = tree(in, post, pos + 1, end, idx - 1);
+        root->left = tree(in, post, start, pos - 1, idx - (end - pos) - 1);
+
+        return root;
+    }
+
+    Node *buildTree(vector<int> &inorder, vector<int> &postorder) {
+        // code here
+        int n = postorder.size();
+
+        if(n == 0 || n != inorder.size()) return nullptr;
+
+        return tree(inorder, postorder, 0, n - 1, n - 1);
+    }
+};
+
+3. Check Tree Traversal (GeeksforGeeks)
+
+class Node {
+  public:
+    int data;
+    Node* left;
+    Node* right;
+    Node(int x) {
+        data = x;
+        left = right = nullptr;
+    }
+};
+
+class Solution {
+  public:
+    int find(vector<int> &in, int num, int start, int end)
+    {
+        for(int i = start; i <= end; ++i)
+        {
+            if(in[i] == num) return i;
+        }
+        return -1;
+    }
+
+    Node* tree(vector<int> &in, vector<int> &pre, int start, int end, int idx)
+    {
+        if(start > end) return nullptr;
+
+        Node* root = new Node(pre[idx]);
+        int pos = find(in, pre[idx], start, end);
+        
+        if(pos == -1) return nullptr;
+
+        root->left = tree(in, pre, start, pos - 1, idx + 1);
+        root->right = tree(in, pre, pos + 1, end, idx + (pos - start) + 1);
+
+        return root;
+    }
+
+    Node *buildTree(vector<int> &inorder, vector<int> &preorder)
+    {
+        int n = preorder.size();
+        if(n == 0 || n != inorder.size()) return nullptr;
+
+        return tree(inorder, preorder, 0, n - 1, 0);
+    }
+
+    void post_traverse(Node* root, vector<int>& a)
+    {
+        if(!root) return;
+
+        post_traverse(root->left, a);
+        post_traverse(root->right, a);
+
+        a.push_back(root->data);
+    }
+
+    bool checktree(vector<int>& preorder, vector<int>& inorder, vector<int>& postorder)
+    {
+        Node* root = buildTree(inorder, preorder);
+        vector<int> a;
+        post_traverse(root, a);
+
+        return a == postorder;
+    }
+};
