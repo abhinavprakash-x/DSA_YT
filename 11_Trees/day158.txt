@@ -1,0 +1,156 @@
+1. Vertical Tree Traversal (GeeksforGeeks)
+
+class Solution {
+  public:
+    vector<vector<int>> verticalOrder(Node *root) {
+        // code here
+        map<int, vector<int>> mp;
+        queue<pair<Node*, int>> q;
+        q.push({root, 0});
+        
+        while(!q.empty())
+        {
+            Node* temp = q.front().first;
+            int horizontal_distance = q.front().second;
+            q.pop();
+            
+            mp[horizontal_distance].push_back(temp->data);
+            
+            if(temp->left) q.push({temp->left, horizontal_distance - 1});
+            if(temp->right) q.push({temp->right, horizontal_distance + 1});
+        }
+        
+        vector<vector<int>> ans;
+        for(auto &it : mp) ans.push_back(it.second);
+        
+        return ans;
+    }
+};
+
+2. Diagonal Tree Traversal (GeeksforGeeks)
+
+My Method which turned out to be wrong for some reason
+class Solution {
+  public:
+    vector<int> diagonal(Node *root) {
+        // code here
+        map<int, vector<int>> mp;
+        queue<pair<Node*, int>> q;
+        q.push({root, 0});
+
+        while(!q.empty())
+        {
+            Node* temp = q.front().first;
+            int d = q.front().second;
+            q.pop();
+
+            mp[d].push_back(temp->data);
+
+            if(temp->left) q.push({temp->left, d + 1});
+            if(temp->right) q.push({temp->right, d});
+        }
+
+        vector<int> ans;
+        for(auto &it : mp)
+        {
+            for(auto x : it.second)
+                ans.push_back(x);
+        }
+
+        return ans;
+    }
+};
+
+The Correct Answer
+class Solution {
+  public:
+    vector<int> diagonal(Node *root)
+    {
+        vector<int> ans;
+        queue<Node*> q;
+        q.push(root);
+
+        while(!q.empty())
+        {
+            Node* temp = q.front();
+            q.pop();
+
+            while(temp)
+            {
+                ans.push_back(temp->data);
+                
+                if(temp->left) q.push(temp->left);
+                temp = temp->right;
+            }
+        }
+        return ans;
+    }
+};
+
+3. Tree Boundary Traversal (GeeksforGeeks)
+
+class Solution {
+  public:
+
+    bool isLeaf(Node* root)
+    {
+        return !root->left && !root->right;
+    }
+
+    void leftBoundary(Node* root, vector<int>& ans)
+    {
+        Node* curr = root->left;
+
+        while(curr)
+        {
+            if(!isLeaf(curr)) ans.push_back(curr->data);
+            if(curr->left) curr = curr->left;
+            else curr = curr->right;
+        }
+    }
+
+    void leaves(Node* root, vector<int>& ans)
+    {
+        if(!root) return;
+
+        if(isLeaf(root))
+        {
+            ans.push_back(root->data);
+            return;
+        }
+
+        leaves(root->left, ans);
+        leaves(root->right, ans);
+    }
+
+    void rightBoundary(Node* root, vector<int>& ans)
+    {
+        Node* curr = root->right;
+        vector<int> temp;
+
+        while(curr)
+        {
+            if(!isLeaf(curr)) temp.push_back(curr->data);
+            if(curr->right) curr = curr->right;
+            else curr = curr->left;
+        }
+
+        reverse(temp.begin(), temp.end());
+        for(auto x : temp) ans.push_back(x);
+    }
+
+    vector<int> boundaryTraversal(Node *root)
+    {
+        if(!root) return {};
+        if(isLeaf(root)) return {root->data};
+
+        vector<int> ans;
+        ans.push_back(root->data);
+
+        leftBoundary(root, ans);
+        leaves(root, ans);
+        rightBoundary(root, ans);
+
+        return ans;
+    }
+};
