@@ -1,0 +1,170 @@
+1. Morris Inorder Traversal O(1) Space
+
+class Solution {
+  public:
+    vector<int> inOrder(Node* root) {
+        // code here
+        vector<int> ans;
+        Node* curr = root;
+        
+        while(curr)
+        {
+            if(!curr->left)
+            {
+                ans.push_back(curr->data);
+                curr = curr->right;
+            }
+            else
+            {
+                Node* temp = curr->left;
+                while(temp->right && temp->right != curr) temp = temp->right;
+                
+                if(temp->right == curr)
+                {
+                    temp->right = nullptr;
+                    ans.push_back(curr->data);
+                    curr = curr->right;
+                }
+                else
+                {
+                    temp->right = curr;
+                    curr = curr->left;
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+2. Morris Pre Order Traversal
+
+class Solution {
+  public:
+    vector<int> preOrder(Node* root) {
+        // code here
+        vector<int> ans;
+        Node* curr = root;
+
+        while(curr)
+        {
+            if(!curr->left)
+            {
+                ans.push_back(curr->data);
+                curr = curr->right;
+            }
+            else
+            {
+                Node* temp = curr->left;
+                while(temp->right && temp->right != curr) temp = temp->right;
+
+                if(temp->right == curr)
+                {
+                    temp->right = nullptr;
+                    curr = curr->right;
+                }
+                else
+                {
+                    ans.push_back(curr->data);
+                    temp->right = curr;
+                    curr = curr->left;
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+3. Morris Post Order Traversal
+
+class Solution {
+  public:
+    vector<int> postOrder(Node* root) {
+        // code here
+        vector<int> ans;
+        Node* curr = root;
+
+        while(curr)
+        {
+            if(!curr->right)
+            {
+                ans.push_back(curr->data);
+                curr = curr->left;
+            }
+            else
+            {
+                Node* temp = curr->right;
+                while(temp->left && temp->left != curr) temp = temp->left;
+
+                if(temp->left == curr)
+                {
+                    temp->left = nullptr;
+                    curr = curr->left;
+                }
+                else
+                {
+                    ans.push_back(curr->data);
+                    temp->left = curr;
+                    curr = curr->right;
+                }
+            }
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+4. Flatten Binary Tree to Linked List (GeeksforGeeks)
+
+class Solution {
+  public:
+    void flatten(Node* root) {
+        while(root)
+        {
+            if (root->left)
+            {
+                Node* temp = root->left;
+
+                while(temp->right)
+                    temp = temp->right;
+
+                temp->right = root->right;
+
+                root->right = root->left;
+                root->left = nullptr;
+            }
+            root = root->right;
+        }
+    }
+};
+
+5. Binary Trr to DLL (GeeksforGeeks)
+
+class Solution {
+  public:
+    void inOrder(Node* root, vector<Node*> &in)
+    {
+        if(!root) return;
+        
+        inOrder(root->left, in);
+        in.push_back(root);
+        inOrder(root->right, in);
+    }
+  
+    Node* treeToDLL(Node* root)
+    {
+        vector<Node*> in;
+        inOrder(root, in);
+        int n = in.size();
+        
+        for(int i = 0; i < n; ++i)
+        {
+            if(i == 0) in[i]->left = nullptr;
+            else in[i]->left = in[i - 1];
+            
+            if(i == n - 1) in[i]->right = nullptr;
+            else in[i]->right = in[i + 1];
+        }
+        
+        return in[0];
+    }
+};
