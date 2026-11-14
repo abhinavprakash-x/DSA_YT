@@ -1,0 +1,259 @@
+1. Burning Tree (GeeksforGeeks)
+
+
+             1
+           2   3
+          4 5 6 7
+target = 2
+
+x = height below target = 1 (only node 4) // height_of_tree(target)
+y = height from root to target = 1 (node 2 is on level 1)
+z = height from root to opposite side of where direction was = 2 (node 3 -> 6/7)
+
+if(x > y + z) return x;
+else return y + z;
+
+
+            1
+          2    3
+         4 5  6 7
+        8
+       9
+      10
+
+x = 4
+y = 1
+z = 2
+
+ans = 4
+
+// Rough Idea (wrong though)
+class Solution {
+  public:
+    Node* find(Node* root, int target, int &h) {
+        if(!root) return nullptr;
+        if(root->data == target) return root;
+        
+        h++;
+        Node* l = find(root->left, target, h);
+        Node* r = find(root->right, target, h);
+        
+        if(l) return l;
+        if(r) return r;
+        return nullptr;
+    }
+    
+    int height(Node* root) {
+        if(!root) return -69;
+        
+        int h = 0;
+        queue<Node*> q;
+        q.push(root);
+        
+        while(!q.empty())
+        {
+            h++;
+            int n = q.size();
+            
+            for(int i = 0; i < n; ++i)
+            {
+                Node* temp = q.front();
+                q.pop();
+                
+                if(temp->left) q.push(temp->left);
+                if(temp->right) q.push(temp->right);
+            }
+        }
+        return h;
+    }
+  
+    int minTime(Node* root, int target)
+    {
+        int height_root_to_target = 0;
+        Node *t = find(root, target, height_root_to_target);
+        
+        int max_height_below_target = 0;
+        int sum = 0;
+        int max_height_opposite_of_target_from_root = 0;
+        
+        if(t) max_height_below_target = height(t);
+        max_height_opposite_of_target_from_root = height(root->right); // fix for automatic opposite direction
+        
+        sum = max_height_opposite_of_target_from_root + height_root_to_target;
+        
+        if(max_height_below_target < sum) return sum;
+        else return max_height_below_target;
+    }
+};
+
+
+// Fixed
+class Solution {
+  public:
+    bool find(Node* root, int target, vector<Node*>& path) {
+        if(!root) return false;
+        path.push_back(root);
+
+        if(root->data == target) return true;
+
+        if(find(root->left, target, path) ||
+            find(root->right, target, path)) {
+            return true;
+        }
+
+        path.pop_back();
+        return false;
+    }
+
+    int height(Node* root) {
+        if (!root) return -1;
+        return 1 + max(height(root->left), height(root->right));
+    }
+
+    int minTime(Node* root, int target) {
+        vector<Node*> path;
+        if(!find(root, target, path)) return 0;
+        int n = path.size();
+
+        int ans = height(path[n - 1]);
+
+        for (int i = n - 2; i >= 0; --i)
+        {
+            Node* ancestor = path[i];
+            Node* childOnPath = path[i + 1];
+
+            Node* opposite;
+
+            if(ancestor->left == childOnPath) opposite = ancestor->right;
+            else opposite = ancestor->left;
+
+            int dist = n - 1 - i;
+            int time = dist + 1 + height(opposite);
+            ans = max(ans, time);
+        }
+        return ans;
+    }
+};
+
+// Video
+class Solution {
+  public:
+    int Burn(Node* root, int& timer, int target)
+    {
+        if(!root) return 0;
+        if(root->data == target) return -1;
+
+        int Left = Burn(root->left, timer, target);
+        int Right = Burn(root->right, timer, target);
+
+        if(Left < 0)
+        {
+            timer = max(timer, abs(Left) + Right);
+            return Left - 1;
+        }
+
+        if(Right < 0)
+        {
+            timer = max(timer, Left + abs(Right));
+            return Right - 1;
+        }
+
+        return 1 + max(Left, Right);
+    }
+
+    Node* find(Node* root, int target)
+    {
+        if (!root) return nullptr;
+
+        if (root->data == target)
+            return root;
+
+        Node* l = find(root->left, target);
+        if (l) return l;
+
+        return find(root->right, target);
+    }
+
+    int Height(Node* root) {
+        if(!root) return 0;
+        return 1 + max(Height(root->left), Height(root->right));
+    }
+
+    int minTime(Node* root, int target) {
+        if(!root) return 0;
+
+        int timer = 0;
+        Burn(root, timer, target);
+
+        Node* BurnNode = find(root, target);
+        int high = Height(BurnNode) - 1;
+
+        return max(timer, high);
+    }
+};
+
+2. Max Path Sum Between Leaf Nodes
+
+// Video but wrong somehow
+class Solution {
+  public:
+    int pathSum(Node* root, int &sum)
+    {
+        if(!root) return 0;
+        
+        if(!root->left && !root->right) return root->data;
+        
+        int l = pathSum(root->left, sum);
+        int r = pathSum(root->right, sum);
+        
+        if(root->left && root->right)
+        {
+            sum = max(sum, l + root->data + r);
+            return root->data + max(l, r);
+        }
+        if(root->left) return root->data + l;
+        if(root->right) return root->data + r;
+    }
+    
+    int maxPathSum(Node *root)
+    {
+        int sum = INT_MIN;
+        int val = pathSum(root, sum);
+        
+        if(root->left && root->right) return sum;
+        else return max(sum, val);
+    }
+};
+
+// Correct Chat GPT
+class Solution{
+public:
+    int pathSum(Node* root, int& sum, bool& found)
+    {
+        if(!root) return 0;
+        if(!root->left && !root->right) return root->data;
+
+        int l = pathSum(root->left, sum, found);
+        int r = pathSum(root->right, sum, found);
+
+        if(root->left && root->right)
+        {
+            found = true;
+            sum = max(sum, l + root->data + r);
+            return root->data + max(l, r);
+        }
+
+        if(root->left) return root->data + l;
+        return root->data + r;
+    }
+
+    int maxPathSum(Node* root)
+    {
+        int sum = INT_MIN;
+        bool found = false;
+
+        pathSum(root, sum, found);
+
+        return found ? sum : -1;
+    }
+};
