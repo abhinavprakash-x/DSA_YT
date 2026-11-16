@@ -1,0 +1,77 @@
+1. Insert Element in Binary Search Tree (GeeksforGeeks)
+
+class Solution {
+  public:
+    Node* insert(Node* root, int key)
+    {
+        if(!root) return new Node(key);
+        if(root->data == key) return root;
+        if(root->data < key) root->right = insert(root->right, key);
+        if(root->data > key) root->left = insert(root->left, key);
+        return root;
+    }
+};
+
+2. Search in BST (GeeksforGeeks)
+
+class Solution {
+  public:
+    bool search(Node* root, int key)
+    {
+        if(!root) return false;
+        if(root->data == key) return true;
+        else if(root->data < key) return search(root->right, key);
+        else return search(root->left, key);
+    }
+};
+
+3. Delete from BST (GeeksforGeeks)
+
+class Solution {
+public:
+    Node* delNode(Node* root, int x)
+    {
+        if(!root) return nullptr;
+
+        if(x < root->data)
+            root->left = delNode(root->left, x);
+        
+        else if(x > root->data)
+            root->right = delNode(root->right, x);
+        
+        else
+        {
+            // Case 1: Leaf Node
+            if(!root->left && !root->right)
+            {
+                delete root;
+                return nullptr;
+            }
+
+            // Case 2a: No left child
+            if(!root->left)
+            {
+                Node* temp = root->right;
+                delete root;
+                return temp;
+            }
+
+            // Case 2b: No right child
+            if(!root->right)
+            {
+                Node* temp = root->left;
+                delete root;
+                return temp;
+            }
+
+            // Case 3: Two children
+            Node* successor = root->right;
+
+            while(successor->left) successor = successor->left;
+            root->data = successor->data;
+            root->right = delNode(root->right, successor->data);
+        }
+
+        return root;
+    }
+};
