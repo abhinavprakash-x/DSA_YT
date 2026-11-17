@@ -1,0 +1,191 @@
+1. Check for BST (GeeksforGeeks)
+
+// My simple and easy technique
+class Solution {
+  public:
+    void inOrder(Node* root, vector<int>& in)
+    {
+        if(!root) return;
+        
+        inOrder(root->left, in);
+        in.push_back(root->data);
+        inOrder(root->right, in);
+    }
+  
+    bool isBST(Node* root) {
+        // code here
+        vector<int> in;
+        inOrder(root, in);
+        
+        int n = in.size();
+        
+        for(int i = 1; i < n; ++i) {
+            if(in[i - 1] < in[i]) continue;
+            else return false;
+        }
+        return true;
+    }
+};
+
+// Video
+class Solution {
+  public:
+    bool BST(Node* root, int &prev) {
+        // code here
+        if(!root) return true;
+        
+        bool l = BST(root->left, prev);
+        if(l == false) return false;
+        if(root->data <= prev) return false;
+        
+        prev = root->data;
+        return BST(root->right, prev);
+    }
+    
+    bool isBST(Node* root) {
+        int prev = INT_MIN;
+        return BST(root, prev);
+    }
+};
+
+2. Minimum Absolute Difference in BST (Leetcode 530)
+
+class Solution {
+public:
+    void inOrder(TreeNode* root, vector<int>& in)
+    {
+        if(!root) return;
+
+        inOrder(root->left, in);
+        in.push_back(root->val);
+        inOrder(root->right, in);
+    }
+
+    int getMinimumDifference(TreeNode* root) {
+        vector<int> in;
+        inOrder(root, in);
+
+        int n = in.size();
+        int mn = INT_MAX;
+
+        for(int i = 1; i < n; ++i)
+        {
+            int diff = abs(in[i] - in[i - 1]);
+            mn = min(mn, diff);
+        }
+
+        return mn;
+    }
+};
+
+class Solution {
+public:
+    void minDist(TreeNode* root, int& prev, int& minDiff) {
+        if (!root) return;
+
+        minDist(root->left, prev, minDiff);
+        if (prev != INT_MIN) minDiff = std::min(minDiff, root->val - prev);
+        prev = root->val;
+        minDist(root->right, prev, minDiff);
+    }
+
+    int minDiffInBST(TreeNode* root) {
+        int prev = INT_MIN, minDiff = INT_MAX;
+        minDist(root, prev, minDiff);
+        return minDiff;
+    }
+};
+
+3. Sum of k Smallest in BST (GeeksforGeeks)
+
+class Solution {
+  public:
+    void inOrder(Node* root, int &s, int &k) {
+        if(!root) return;
+        if(k == 0) return;
+        
+        inOrder(root->left, s, k);
+        if(k == 0) return;
+        
+        s += root->data;
+        k--;
+        
+        inOrder(root->right, s, k);
+    }
+  
+    int sum(Node* root, int k) {
+        // code here
+        int s = 0;
+        inOrder(root, s, k);
+        return s;
+    }
+};
+
+4. Kth Largest in BST (GeeksforGeeks)
+
+class Solution {
+  public:
+    void inOrder(Node* root, int &k, int &ans) {
+        if(!root) return;
+        
+        inOrder(root->right, k, ans);
+        
+        k--;
+        if(k == 0) ans = root->data;
+        if(k <= 0) return;
+        
+        inOrder(root->left, k, ans);
+    }
+  
+    int kthLargest(Node *root, int k) {
+        // code here
+        int ans = -1;
+        inOrder(root, k, ans);
+        return ans;
+    }
+};
+
+5. Kth Smallest in BST (InterviewBit)
+
+void inOrder(TreeNode* root, int &k, int &ans) {
+        if(!root) return;
+        
+        inOrder(root->left, k, ans);
+        
+        k--;
+        if(k == 0) ans = root->val;
+        if(k <= 0) return;
+        
+        inOrder(root->right, k, ans);
+    }
+
+int Solution::kthsmallest(TreeNode* A, int B) {
+    int ans = -1;
+    inOrder(A, B, ans);
+    return ans;
+}
+
+6. Array to BST (GeeksforGeeks)
+
+class Solution {
+  public:
+    Node* createTree(int l, int r, vector<int>& nums)
+    {
+        if(l > r) return nullptr;
+        
+        int m = (l + r) / 2;
+        
+        Node* root = new Node(nums[m]);
+        
+        root->left = createTree(l, m - 1, nums);
+        root->right = createTree(m + 1, r, nums);
+        
+        return root;
+    }
+  
+    Node* sortedArrayToBST(vector<int>& nums)
+    {
+        int n = nums.size();
+        return createTree(0, n - 1, nums);
+    }
+};
