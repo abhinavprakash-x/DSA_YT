@@ -1,0 +1,122 @@
+1. Construct BST from Preorder Traversal (Leetcode 1008)
+
+My Dumb O(n^2) Solution
+
+class Solution {
+public:
+    TreeNode* construct(vector<int>& preorder, int l, int r, int n)
+    {
+        if(l > r) return nullptr;
+
+        TreeNode* root = new TreeNode(preorder[l]);
+        int idx = r + 1;
+
+        for(int i = l + 1; i <= r; ++i)
+        {
+            if(preorder[i] < preorder[l]) continue;
+            else
+            {
+                idx = i;
+                break;
+            }
+        }
+
+        root->left = construct(preorder, l + 1, idx - 1, n);
+        root->right = construct(preorder, idx, r, n);
+        return root;
+    }
+
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        int n = preorder.size() - 1;
+        return construct(preorder, 0, n, n);
+    }
+};
+
+Video SOlution Smart O(n)
+
+class Solution {
+public:
+    TreeNode* construct(vector<int>& preorder, int &idx, int lb, int ub)
+    {
+        if(idx == preorder.size() ||
+            preorder[idx] < lb || preorder[idx] > ub) return nullptr;
+
+        TreeNode* root = new TreeNode(preorder[idx++]);
+        root->left = construct(preorder, idx, lb, root->val);
+        root->right = construct(preorder, idx, root->val, ub);
+
+        return root;
+    }
+
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        int idx = 0;
+        return construct(preorder, idx, INT_MIN, INT_MAX);
+    }
+};
+
+2. Construct BST from Postorder (GeeksforGeeks)
+
+class Solution {
+  public:
+    Node* construct(vector<int>& post, int &idx, int lb, int ub)
+    {
+        if(idx == -1 ||
+            post[idx] < lb || post[idx] > ub) return nullptr;
+            
+        Node* root = new Node(post[idx--]);
+        root->right = construct(post, idx, root->data, ub);
+        root->left = construct(post, idx, lb, root->data);
+        
+        return root;
+    }
+  
+    Node* constructTree(vector<int>& post)
+    {
+        int idx = post.size() - 1;
+        return construct(post, idx, INT_MIN, INT_MAX);
+    }
+};
+
+3. Check Preorder of BST (GeeksforGeeks)
+
+class Solution {
+  public:
+    void check(vector<int>& arr, int &idx, int l, int u, int n)
+    {
+        if(idx == n || arr[idx] < l || arr[idx] > u) return;
+        
+        int val = arr[idx++];
+        check(arr, idx, l, val, n);
+        check(arr, idx, val, u, n);
+    }
+  
+    bool canRepresentBST(vector<int> &arr) {
+        // code here
+        int idx = 0;
+        check(arr, idx, INT_MIN, INT_MAX, arr.size());
+        
+        return idx == arr.size();
+    }
+};
+
+4. Preorder to BST (GeeksforGeeks)
+
+class Solution {
+  public:
+    Node* construct(vector<int>& preorder, int &idx, int lb, int ub)
+    {
+        if(idx == preorder.size() ||
+            preorder[idx] < lb || preorder[idx] > ub) return nullptr;
+
+        Node* root = new Node(preorder[idx++]);
+        root->left = construct(preorder, idx, lb, root->data);
+        root->right = construct(preorder, idx, root->data, ub);
+
+        return root;
+    }
+  
+    Node* preToBST(vector<int>& pre) {
+        int idx = 0;
+        return construct(pre, idx, INT_MIN, INT_MAX);
+    }
+};
