@@ -1,0 +1,107 @@
+1. Lowest Common Ancestor in a BST (GeeksforGeeks)
+
+class Solution {
+public:
+    Node* findLCA(Node* root, Node* n1, Node* n2) {
+        if (!root) return nullptr;
+
+        if (n1->data < root->data && n2->data < root->data)
+            return findLCA(root->left, n1, n2);
+
+        if (n1->data > root->data && n2->data > root->data)
+            return findLCA(root->right, n1, n2);
+
+        return root;
+    }
+};
+
+2. BST Keys in Range (GeeksforGeeks)
+
+class Solution {
+public:
+    void inOrder(Node* root, int low, int high, vector<int>& ans)
+    {
+        if(!root) return;
+
+        if(root->data > low)
+            inOrder(root->left, low, high, ans);
+
+        if(root->data >= low && root->data <= high)
+            ans.push_back(root->data);
+
+        if(root->data < high)
+            inOrder(root->right, low, high, ans);
+    }
+
+    vector<int> nodesInRange(Node* root, int low, int high)
+    {
+        vector<int> ans;
+        inOrder(root, low, high, ans);
+        return ans;
+    }
+};
+
+3. BST with Dead End (GeeksforGeeks)
+
+class Solution {
+  public:
+    bool Dead(Node* root, int l, int h)
+    {
+        if(!root) return false;
+        
+        if(!root->left && !root->right)
+        {
+            if(root->data - l == 1 && h - root->data == 1) return true;
+            else return false;
+        }
+        
+        return Dead(root->left, l, root->data) || Dead(root->right, root->data, h);
+    }
+  
+    bool isDeadEnd(Node *root)
+    {
+        return Dead(root, 0, INT_MAX);
+    }
+};
+
+4. Common Nodes in Two BSTs (GeeksforGeeks)
+
+class Solution {
+  public:
+    void inOrder(Node* root, vector<int>& a)
+    {
+        if(!root) return;
+        
+        inOrder(root->left, a);
+        a.push_back(root->data);
+        inOrder(root->right, a);
+    }
+  
+    vector<int> findCommon(Node* r1, Node* r2)
+    {
+        vector<int> a;
+        inOrder(r1, a);
+        int i = a.size();
+        
+        vector<int> b;
+        inOrder(r2, b);
+        int j = b.size();
+        
+        vector<int> c;
+        int k = 0, l = 0;
+        
+        while(k < i && l < j)
+        {
+            if(a[k] == b[l])
+            {
+                c.push_back(a[k]);
+                ++k;
+                ++l;
+            }
+            else if(a[k] < b[l]) ++k;
+            else ++l;
+        }
+        
+        return c;
+    }
+};
