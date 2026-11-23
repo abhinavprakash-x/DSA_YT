@@ -1,0 +1,214 @@
+1. Sorted LL to BST (GeeksforGeeks)
+
+// My dumb approach
+class Solution {
+public:
+    LNode* find_middle(LNode* head, LNode*& prev)
+    {
+        LNode* slow = head;
+        LNode* fast = head;
+        prev = nullptr;
+
+        while (fast && fast->next)
+        {
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        return slow;
+    }
+
+    TNode* sortedListToBST(LNode* head) {
+        if(!head) return nullptr;
+
+        LNode* prev = nullptr;
+        LNode* m = find_middle(head, prev);
+        TNode* r = new TNode(m->data);
+        
+        LNode* two = m->next;
+        if(prev) prev->next = nullptr;
+
+        m->next = nullptr;
+        LNode* one = (head == m) ? nullptr : head;
+
+        r->left = sortedListToBST(one);
+        r->right = sortedListToBST(two);
+
+        return r;
+    }
+};
+
+// Video
+class Solution {
+  public:
+    TNode* build(vector<int>& tree, int s, int e)
+    {
+        if(s > e) return nullptr;
+        
+        int m = (s + e + 1) / 2; // or s + (e - s) / 2
+        
+        TNode* r = new TNode(tree[m]);
+        
+        r->left = build(tree, s, m - 1);
+        r->right = build(tree, m + 1, e);
+        
+        return r;
+    }
+  
+    TNode *sortedListToBST(LNode *head)
+    {
+        vector<int> tree;
+        
+        while(head)
+        {
+            tree.push_back(head->data);
+            head = head->next;
+        }
+        
+        int n = tree.size();
+        return build(tree, 0, n - 1);
+    }
+};
+
+2. Merge Two BSTs (GeeksforGeeks)
+
+class Solution {
+  public:
+    void inOrder(Node* root, vector<int>& in)
+    {
+        if(!root) return;
+
+        inOrder(root->left, in);
+        in.push_back(root->data);
+        inOrder(root->right, in);
+    }
+  
+    vector<int> merge(Node *r1, Node *r2)
+    {
+        vector<int> one;
+        inOrder(r1, one);
+        int i = 0, n = one.size();
+        
+        vector<int> two;
+        inOrder(r2, two);
+        int j = 0, m = two.size();
+        
+        vector<int> three(m + n);
+        int k = 0;
+        
+        while(i < n && j < m)
+        {
+            if(one[i] < two[j]) three[k++] = one[i++];
+            else three[k++] = two[j++];
+        }
+        while(i < n) three[k++] = one[i++];
+        while(j < m) three[k++] = two[j++];
+        
+        return three;
+    }
+};
+
+3. Fixing Two Nodes of BST (GeeksforGeeks)
+
+class Solution {
+  public:
+    void inOrder(Node* root, vector<int>& in)
+    {
+        if(!root) return;
+
+        inOrder(root->left, in);
+        in.push_back(root->data);
+        inOrder(root->right, in);
+    }
+    
+    void inOrder_edit(Node* root, vector<int>& in, int &idx)
+    {
+        if(!root) return;
+
+        inOrder_edit(root->left, in, idx);
+        root->data = in[idx++];
+        inOrder_edit(root->right, in, idx);
+    }
+  
+    Node* correctBST(Node* root)
+    {
+        vector<int> arr;
+        inOrder(root, arr);
+        
+        int n = arr.size();
+        int first = -1, second = -1;
+        
+        for(int i = 1; i < n; i++)
+        {
+            if(arr[i] < arr[i - 1])
+            {
+                if(first == -1) first = i - 1;
+                second = i;
+            }
+        }
+        swap(arr[first], arr[second]);
+        
+        int idx = 0;
+        inOrder_edit(root, arr, idx);
+        return root;
+    }
+};
+
+// Video
+class Solution {
+  public:
+    Node* correctBST(Node* root)
+    {
+        Node *curr = nullptr, *ex = root;
+        Node *first = nullptr, *second = nullptr;
+        Node *last = nullptr, *present = nullptr;
+        
+        while(root)
+        {
+            if(!root->left)
+            {
+                last = present;
+                present = root;
+                
+                if(last && (last->data > present->data))
+                {
+                    if(!first) first = last;
+                    second = present;
+                }
+                root = root->right;
+            }
+            else
+            {
+                curr = root->left;
+                while(curr->right && curr->right != root)
+                    curr = curr->right;
+                    
+                if(!curr->right)
+                {
+                    curr->right = root;
+                    root = root->left;
+                }
+                else
+                {
+                    curr->right = nullptr;
+                    last = present;
+                    present = root;
+                    
+                    if(last && (last->data > present->data))
+                    {
+                        if(!first) first = last;
+                        second = present;
+                    }
+                    root = root->right;
+                }
+            }
+        }
+        
+        int temp = first->data;
+        first->data = second->data;
+        second->data = temp;
+        
+        return ex;
+    }
+};
