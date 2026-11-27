@@ -1,0 +1,77 @@
+1. Inserion in AVL Tree (GeeksforGeeks)
+
+class Solution {
+  public:
+    int getHeight(Node* root)
+    {
+        if (root == nullptr) return 0;
+        return root->height;
+    }
+  
+    Node* rightRotate(Node* root)
+    {
+        Node* child = root->left;
+        Node* T2 = child->right;
+
+        child->right = root;
+        root->left = T2;
+    
+        root->height = 1 + max(getHeight(root->left), getHeight(root->right));
+        child->height = 1 + max(getHeight(child->left), getHeight(child->right));
+    
+        return child;
+    }
+    
+    Node* leftRotate(Node* root)
+    {
+        Node* child = root->right;
+        Node* T2 = child->left;
+    
+        child->left = root;
+        root->right = T2;
+    
+        root->height = 1 + max(getHeight(root->left), getHeight(root->right));
+        child->height = 1 + max(getHeight(child->left), getHeight(child->right));
+    
+        return child;
+    }
+  
+    Node* insertToAVL(Node* root, int key)
+    {
+        if(root == nullptr) return new Node(key);
+    
+        if(key < root->key) root->left = insertToAVL(root->left, key);
+        else if(key > root->key) root->right = insertToAVL(root->right, key);
+        else return root;
+    
+        root->height = 1 + max(getHeight(root->left), getHeight(root->right));
+        int balance = getHeight(root->left) - getHeight(root->right);
+    
+        // Left Left Case
+        if(balance > 1 && key < root->left->key)
+            root = rightRotate(root);
+    
+        // Right Right Case
+        else if(balance < -1 && key > root->right->key)
+            root = leftRotate(root);
+    
+        // Left Right Case
+        else if(balance > 1 && key > root->left->key)
+        {
+            root->left = leftRotate(root->left);
+            return rightRotate(root);
+        }
+    
+        // Right Left Case
+        else if(balance < -1 && key < root->right->key)
+        {
+            root->right = rightRotate(root->right);
+            return leftRotate(root);
+        }
+    
+        return root;
+    }
+};
+
+2. Deletion in AVL Tree (GeeksforGeeks)
+
