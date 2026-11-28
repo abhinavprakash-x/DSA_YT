@@ -45,39 +45,107 @@ AVLNode* leftRotate(AVLNode* root)
     return child;
 }
 
-AVLNode* insert(AVLNode* root, int key)
+AVLNode* insert(AVLNode* root, int data)
 {
-    if(root == nullptr) return new AVLNode(key);
+    if(root == nullptr) return new AVLNode(data);
 
-    if(key < root->data) root->left = insert(root->left, key);
-    else if(key > root->data) root->right = insert(root->right, key);
+    if(data < root->data) root->left = insert(root->left, data);
+    else if(data > root->data) root->right = insert(root->right, data);
     else return root;
 
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
     int balance = getHeight(root->left) - getHeight(root->right);
 
     // Left Left Case
-    if(balance > 1 && key < root->left->data)
+    if(balance > 1 && data < root->left->data)
         root = rightRotate(root);
 
     // Right Right Case
-    else if(balance < -1 && key > root->right->data)
+    else if(balance < -1 && data > root->right->data)
         root = leftRotate(root);
 
     // Left Right Case
-    else if(balance > 1 && key > root->left->data)
+    else if(balance > 1 && data > root->left->data)
     {
         root->left = leftRotate(root->left);
         return rightRotate(root);
     }
 
     // Right Left Case
-    else if(balance < -1 && key < root->right->data)
+    else if(balance < -1 && data < root->right->data)
     {
         root->right = rightRotate(root->right);
         return leftRotate(root);
     }
 
+    return root;
+}
+    
+int getBalance(AVLNode* root)
+{
+    return getHeight(root->left) - getHeight(root->right);
+}
+
+AVLNode *deleteNode(AVLNode *root, int data)
+{
+    if(!root) return nullptr;
+    
+    if(data < root->data) root->left = deleteNode(root->left, data);
+    else if(data > root->data) root->right = deleteNode(root->right, data);
+    else
+    {
+        if(!root->left && !root->right)
+        {
+            delete root;
+            return nullptr;
+        }
+        
+        else if(root->left && !root->right)
+        {
+            AVLNode* temp = root->left;
+            delete root;
+            return temp;
+        }
+        
+        else if(!root->left && root->right)
+        {
+            AVLNode* temp = root->right;
+            delete root;
+            return temp;
+        }
+        
+        else
+        {
+            AVLNode* curr = root->right;
+            while(curr->left) curr = curr->left;
+            root->data = curr->data;
+            root->right = deleteNode(root->right, curr->data);
+        }
+    }
+    
+    root->height = 1 + max(getHeight(root->left), getHeight(root->right));
+    int balance = getBalance(root);
+    
+    if(balance > 1)
+    {
+        if(getBalance(root->left) >= 0) return rightRotate(root);
+        else
+        {
+            root->left = leftRotate(root->left);
+            return rightRotate(root);
+        }
+    }
+    
+    else if(balance < -1)
+    {
+        if(getBalance(root->right) <= 0) return leftRotate(root);
+        else
+        {
+            root->right = rightRotate(root->right);
+            return leftRotate(root);
+        }
+    }
+    
     return root;
 }
 

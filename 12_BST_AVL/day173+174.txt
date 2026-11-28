@@ -75,3 +75,107 @@ class Solution {
 
 2. Deletion in AVL Tree (GeeksforGeeks)
 
+class Solution {
+  public:
+    int getHeight(Node* root)
+    {
+        if (root == nullptr) return 0;
+        return root->height;
+    }
+    
+    int getBalance(Node* root)
+    {
+        return getHeight(root->left) - getHeight(root->right);
+    }
+
+    Node* rightRotate(Node* root)
+    {
+        Node* child = root->left;
+        Node* T2 = child->right;
+
+        child->right = root;
+        root->left = T2;
+
+        root->height = 1 + max(getHeight(root->left), getHeight(root->right));
+        child->height = 1 + max(getHeight(child->left), getHeight(child->right));
+
+        return child;
+    }
+
+    Node* leftRotate(Node* root)
+    {
+        Node* child = root->right;
+        Node* T2 = child->left;
+
+        child->left = root;
+        root->right = T2;
+
+        root->height = 1 + max(getHeight(root->left), getHeight(root->right));
+        child->height = 1 + max(getHeight(child->left), getHeight(child->right));
+
+        return child;
+    }
+  
+    Node *deleteNode(Node *root, int key)
+    {
+        if(!root) return nullptr;
+        
+        if(key < root->key) root->left = deleteNode(root->left, key);
+        else if(key > root->key) root->right = deleteNode(root->right, key);
+        else
+        {
+            if(!root->left && !root->right)
+            {
+                delete root;
+                return nullptr;
+            }
+            
+            else if(root->left && !root->right)
+            {
+                Node* temp = root->left;
+                delete root;
+                return temp;
+            }
+            
+            else if(!root->left && root->right)
+            {
+                Node* temp = root->right;
+                delete root;
+                return temp;
+            }
+            
+            else
+            {
+                Node* curr = root->right;
+                while(curr->left) curr = curr->left;
+                root->key = curr->key;
+                root->right = deleteNode(root->right, curr->key);
+            }
+        }
+        
+        root->height = 1 + max(getHeight(root->left), getHeight(root->right));
+        int balance = getBalance(root);
+        
+        if(balance > 1)
+        {
+            if(getBalance(root->left) >= 0) return rightRotate(root);
+            else
+            {
+                root->left = leftRotate(root->left);
+                return rightRotate(root);
+            }
+        }
+        
+        else if(balance < -1)
+        {
+            if(getBalance(root->right) <= 0) return leftRotate(root);
+            else
+            {
+                root->right = rightRotate(root->right);
+                return leftRotate(root);
+            }
+        }
+        
+        return root;
+    }
+};
